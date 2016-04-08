@@ -29,4 +29,8 @@ public class Writer {
         System.out.println();
         System.out.println("END;");
     }
+
+    public void toAsmConsole(List<String> input) {
+
+    }
 }

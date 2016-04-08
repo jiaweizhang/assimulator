@@ -1,5 +1,7 @@
 import assemble.Assembler;
 import assemble.ECE350Assembler;
+import disassemble.Disassembler;
+import disassemble.ECE350Disassembler;
 import io.Reader;
 import io.Writer;
 import models.IntLine;
@@ -15,7 +17,8 @@ public class Application {
     public static void main(String args[]) {
         // System.out.println(System.getProperty("user.dir"));
         Application a = new Application();
-        a.assemble();
+        //a.assemble();
+        a.disassemble();
     }
 
     private void assemble() {
@@ -36,5 +39,24 @@ public class Application {
         Writer w = new Writer();
         w.toConsole(readableStrings);
         w.toMifConsole(binaryStrings);
+    }
+
+    private void disassemble() {
+        Reader r = new Reader();
+        List<String> strings = null;
+        try {
+            strings = r.readFile("mif/test.mif");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+            return;
+        }
+
+        Disassembler d = new ECE350Disassembler();
+        List<StringLine> parsed = d.parse(strings);
+        List<String> readable = d.toString(parsed);
+
+        Writer w = new Writer();
+        w.toConsole(readable);
+        w.toAsmConsole(readable);
     }
 }
