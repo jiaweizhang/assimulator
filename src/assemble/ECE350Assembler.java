@@ -12,6 +12,63 @@ public class ECE350Assembler implements Assembler {
     Map<String, Integer> labelMap = new HashMap<String, Integer>();
     Map<String, Integer> dmemMap = new HashMap<String, Integer>();
 
+    /**
+     * Wonder if compiler parallelizes these operations
+     *
+     * @param input
+     * @return
+     */
+    public List<StringLine> asmSanitize(List<String> input) {
+        List<StringLine> lined = addLines(input);
+        List<StringLine> noComments = removeComments(lined);
+        List<StringLine> trimmed = trimWhitespace(noComments);
+        return trimmed;
+    }
+
+    /**
+     * adds line number
+     */
+    private List<StringLine> addLines(List<String> input) {
+        List<StringLine> output = new ArrayList<StringLine>();
+        for (int i = 0; i < input.size(); i++) {
+            output.add(new StringLine(i + 1, input.get(i)));
+        }
+        return output;
+    }
+
+    /**
+     * Not sure how optimal performance is
+     * Removes whitespace from front and back and empty lines
+     */
+    private List<StringLine> trimWhitespace(List<StringLine> input) {
+        List<StringLine> output = new ArrayList<StringLine>();
+        for (StringLine line : input) {
+            String trimmed = line.getString().trim();
+            if (trimmed.length() > 0) {
+                output.add(line);
+            }
+        }
+        return output;
+    }
+
+    /**
+     * Removes comments
+     *
+     * @param input
+     * @return
+     */
+    private List<StringLine> removeComments(List<StringLine> input) {
+        List<StringLine> output = new ArrayList<StringLine>();
+        for (StringLine line : input) {
+            if (line.getString().indexOf('#') != -1) {
+                output.add(new StringLine(line.getLine(), line.getString().substring(0, line.getString().indexOf('#'))));
+            } else {
+                output.add(line);
+            }
+        }
+        return output;
+    }
+
     @Override
     public List<String> toBinary(List<IntLine> input) {
         List<String> strings = new ArrayList<String>();
@@ -31,13 +88,14 @@ public class ECE350Assembler implements Assembler {
     }
 
     @Override
-    public List<IntLine> parse(List<StringLine> input) {
+    public List<IntLine> parse(List<String> input) {
+        List<StringLine> sanitized = asmSanitize(input);
         Set<String> insns = new HashSet<String>();
         insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw"));
         List<StringLine> unLabeled = new ArrayList<>();
         int insnCount = 0;
 
-        for (StringLine sl : input) {
+        for (StringLine sl : sanitized) {
             String str = sl.getString();
             String[] arr = str.split("[, \\(\\)]+");
             if (!insns.contains(arr[0])) {

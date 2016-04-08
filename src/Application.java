@@ -1,6 +1,5 @@
 import assemble.Assembler;
 import assemble.ECE350Assembler;
-import assemble.Sanitizer;
 import io.Reader;
 import io.Writer;
 import models.IntLine;
@@ -29,11 +28,8 @@ public class Application {
             return;
         }
 
-        Sanitizer s = new Sanitizer();
-        List<StringLine> sl = s.asmSanitize(strings);
-
         Assembler a = new ECE350Assembler();
-        List<IntLine> ints = a.parse(sl);
+        List<IntLine> ints = a.parse(strings);
         List<String> readableStrings = a.toString(ints);
         List<String> binaryStrings = a.toBinary(ints);
 
