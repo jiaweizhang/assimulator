@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.staticFileLocation;
 
 
 /**
@@ -23,7 +23,7 @@ import static spark.Spark.post;
  */
 public class Application {
     public static void main(String args[]) {
-        get("/", (req, res) -> "Assembler-Disassembler-Simulator");
+        staticFileLocation("/public");
 
         post("/api/assemble", (req, res) -> {
             Application a = new Application();
