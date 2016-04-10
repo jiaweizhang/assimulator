@@ -1,5 +1,7 @@
 package io;
 
+import models.ECE350State;
+
 import java.util.List;
 
 /**
@@ -31,6 +33,13 @@ public class Writer {
     }
 
     public void toAsmConsole(List<String> input) {
+        // TODO
+    }
 
+    public void toStatesConsole(List<ECE350State> states) {
+        for (int i=0; i<states.size(); i++) {
+            System.out.println("Number: " + i);
+            states.get(i).print();
+        }
     }
 }

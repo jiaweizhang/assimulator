@@ -82,5 +82,8 @@ public class Application {
 
         Simulator s = new ECE350Simulator();
         List<ECE350State> states = s.simulate(instructions, ints, new HashMap<Integer, Integer>());
+
+        Writer w = new Writer();
+        w.toStatesConsole(states);
     }
 }

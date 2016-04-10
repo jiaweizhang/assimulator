@@ -6,6 +6,7 @@ import models.IntLine;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jiaweizhang on 4/9/16.
@@ -13,7 +14,7 @@ import java.util.List;
 public class ECE350Simulator implements Simulator {
     private int current;
     private int[] registers;
-    private HashMap<Integer, Integer> dmem;
+    private Map<Integer, Integer> dmem;
     private List<ECE350State> states;
 
     public List<ECE350State> simulate(int numberToSimulate, List<IntLine> input) {
@@ -41,9 +42,19 @@ public class ECE350Simulator implements Simulator {
                 return states;
             }
             simulateSingle(justInts.get(current), i+1);
+            addToStates();
         }
         System.out.println("Simulation Finished");
         return states;
+    }
+
+    private void addToStates() {
+        int[] newRegisters = new int[32];
+        for (int i=0; i<32; i++) {
+            newRegisters[i] = registers[i];
+        }
+        Map<Integer, Integer> newDmem = new HashMap<Integer, Integer>(dmem);
+        states.add(new ECE350State(newRegisters, newDmem));
     }
 
     private void simulateSingle(Integer insn, int index) {

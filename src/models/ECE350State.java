@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -8,4 +9,30 @@ import java.util.Map;
 public class ECE350State {
     private int[] register;
     private Map<Integer, Integer> dmem;
+
+    public ECE350State(int[] register, Map<Integer, Integer> dmem) {
+        this.register = register;
+        this.dmem = dmem;
+    }
+
+    public int[] getRegister() {
+        return register;
+    }
+
+    public void setRegister(int[] register) {
+        this.register = register;
+    }
+
+    public Map<Integer, Integer> getDmem() {
+        return dmem;
+    }
+
+    public void setDmem(Map<Integer, Integer> dmem) {
+        this.dmem = dmem;
+    }
+
+    public void print() {
+        System.out.println(Arrays.toString(register));
+        System.out.println(dmem.toString());
+    }
 }
