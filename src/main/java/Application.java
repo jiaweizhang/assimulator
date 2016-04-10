@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.staticFileLocation;
 
@@ -23,6 +24,7 @@ import static spark.Spark.staticFileLocation;
  */
 public class Application {
     public static void main(String args[]) {
+        port(80);
         staticFileLocation("/public");
 
         post("/api/assemble", (req, res) -> {
