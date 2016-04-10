@@ -14,16 +14,20 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
+import static spark.Spark.*;
+
+
 /**
  * Created by jiaweizhang on 4/7/16.
  */
 public class Application {
     public static void main(String args[]) {
+        get("/", (req, res) -> "Assembler-Disassembler-Simulator");
         // System.out.println(System.getProperty("user.dir"));
-        Application a = new Application();
+        //Application a = new Application();
         //a.assemble();
         //a.disassemble();
-        a.simulate();
+        //a.simulate();
     }
 
     private void assemble() {
