@@ -4,10 +4,14 @@ import disassemble.Disassembler;
 import disassemble.ECE350Disassembler;
 import io.Reader;
 import io.Writer;
+import models.ECE350State;
 import models.IntLine;
 import models.StringLine;
+import simulate.ECE350Simulator;
+import simulate.Simulator;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,7 +22,8 @@ public class Application {
         // System.out.println(System.getProperty("user.dir"));
         Application a = new Application();
         //a.assemble();
-        a.disassemble();
+        //a.disassemble();
+        a.simulate();
     }
 
     private void assemble() {
@@ -58,5 +63,24 @@ public class Application {
         Writer w = new Writer();
         w.toConsole(readable);
         w.toAsmConsole(readable);
+    }
+
+    private void simulate() {
+        Reader r = new Reader();
+        List<String> strings = null;
+        try {
+            strings = r.readFile("asm/test.asm");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+            return;
+        }
+
+        int instructions = 50;
+
+        Assembler a = new ECE350Assembler();
+        List<IntLine> ints = a.parse(strings);
+
+        Simulator s = new ECE350Simulator();
+        List<ECE350State> states = s.simulate(instructions, ints, new HashMap<Integer, Integer>());
     }
 }
