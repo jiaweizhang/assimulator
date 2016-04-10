@@ -1,7 +1,7 @@
 package simulate;
 
-import models.IntLine;
 import models.ECE350State;
+import models.IntLine;
 
 import java.util.HashMap;
 import java.util.List;

@@ -31,8 +31,8 @@ public class ECE350State {
         this.dmem = dmem;
     }
 
-    public void print() {
-        System.out.println(Arrays.toString(register));
-        System.out.println(dmem.toString());
+    @Override
+    public String toString() {
+        return Arrays.toString(register) + "\n" + dmem.toString() + "\n";
     }
 }

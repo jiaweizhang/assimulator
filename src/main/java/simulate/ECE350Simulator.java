@@ -36,12 +36,12 @@ public class ECE350Simulator implements Simulator {
         }
 
         // loop
-        for (int i=0; i<numberToSimulate; i++) {
+        for (int i = 0; i < numberToSimulate; i++) {
             if (current >= input.size()) {
                 printError("Simulation finished because PC is out of bounds");
                 return states;
             }
-            simulateSingle(justInts.get(current), i+1);
+            simulateSingle(justInts.get(current), i + 1);
             addToStates();
         }
         System.out.println("Simulation Finished");
@@ -50,7 +50,7 @@ public class ECE350Simulator implements Simulator {
 
     private void addToStates() {
         int[] newRegisters = new int[32];
-        for (int i=0; i<32; i++) {
+        for (int i = 0; i < 32; i++) {
             newRegisters[i] = registers[i];
         }
         Map<Integer, Integer> newDmem = new HashMap<Integer, Integer>(dmem);
@@ -159,12 +159,12 @@ public class ECE350Simulator implements Simulator {
                 printError("setx not implemented");
                 current++;
                 return;
-                //return "setx " + (insn & 134217727);
+            //return "setx " + (insn & 134217727);
             case 22:
                 printError("bex not implemented");
                 current++;
                 return;
-                //return "bex " + (insn & 134217727);
+            //return "bex " + (insn & 134217727);
             default:
                 printError("Unrecognized opcode: " + opcode);
                 current++;
@@ -191,9 +191,9 @@ public class ECE350Simulator implements Simulator {
                     case 3:
                         return "or $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", $r" + ((insn >> 12) & 31);
                     case 4:
-                        return "sll $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >>7) & 31);
+                        return "sll $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >> 7) & 31);
                     case 5:
-                        return "sra $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >>7) & 31);
+                        return "sra $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >> 7) & 31);
                     case 6:
                         return "mul $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", $r" + ((insn >> 12) & 31);
                     case 7:
@@ -205,19 +205,19 @@ public class ECE350Simulator implements Simulator {
             case 1:
                 return "j " + (insn & 134217727);
             case 2:
-                return "bne $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071));
+                return "bne $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071));
             case 3:
                 return "jal " + (insn & 134217727);
             case 4:
                 return "jr $r" + ((insn >> 22) & 31);
             case 5:
-                return "addi $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071));
+                return "addi $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071));
             case 6:
-                return "blt $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071));
+                return "blt $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071));
             case 7:
-                return "sw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
+                return "sw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
             case 8:
-                return "lw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
+                return "lw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
             case 21:
                 return "setx " + (insn & 134217727);
             case 22:

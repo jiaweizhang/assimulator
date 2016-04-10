@@ -206,7 +206,7 @@ public class ECE350Assembler implements Assembler {
                 bin = (8 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[3]) << 17) + (seLabelDmem(line, arr[2]));
                 break;
             default:
-                printError(line, "Unknown symbol: "+arr[0]);
+                printError(line, "Unknown symbol: " + arr[0]);
                 bin = 0;
                 break;
 

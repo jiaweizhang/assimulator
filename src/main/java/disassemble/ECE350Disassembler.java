@@ -20,7 +20,7 @@ public class ECE350Disassembler implements Disassembler {
     @Override
     public List<StringLine> parse(List<String> input) {
         List<StringLine> withLines = new ArrayList<StringLine>();
-        for (int i=0; i<input.size(); i++) {
+        for (int i = 0; i < input.size(); i++) {
             String trimmed = input.get(i).trim();
             if (trimmed.length() > 0) {
                 withLines.add(new StringLine(i, trimmed));
@@ -32,7 +32,7 @@ public class ECE350Disassembler implements Disassembler {
         while (unfulfilled > 0) {
             StringLine frontSL = withLines.get(0);
             String front = frontSL.getString();
-            if (front.indexOf("DEPTH") != -1 ) {
+            if (front.indexOf("DEPTH") != -1) {
                 depth = Integer.parseInt(front.split("[ :=;]+")[1]);
             } else if (front.indexOf("WIDTH") != -1) {
                 width = Integer.parseInt(front.split("[ :=;]+")[1]);
@@ -70,7 +70,7 @@ public class ECE350Disassembler implements Disassembler {
             return new ArrayList<StringLine>();
         }
 
-        if (withLines.get(withLines.size()-1).getString().indexOf("END") == -1) {
+        if (withLines.get(withLines.size() - 1).getString().indexOf("END") == -1) {
             printError(0, "No END data symbol detected");
             return new ArrayList<StringLine>();
         }
@@ -94,19 +94,19 @@ public class ECE350Disassembler implements Disassembler {
             case 1:
                 return "j " + (insn & 134217727);
             case 2:
-                return "bne $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071));
+                return "bne $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071));
             case 3:
                 return "jal " + (insn & 134217727);
             case 4:
                 return "jr $r" + ((insn >> 22) & 31);
             case 5:
-                return "addi $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071));
+                return "addi $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071));
             case 6:
-                return "blt $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071));
+                return "blt $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071));
             case 7:
-                return "sw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
+                return "sw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
             case 8:
-                return "lw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
+                return "lw $r" + ((insn >> 22) & 31) + ", " + (((insn >> 16) & 1) == 1 ? (insn & 131071) - 131072 : (insn & 131071)) + "($r" + ((insn >> 17) & 31) + ")";
             case 21:
                 return "setx " + (insn & 134217727);
             case 22:
@@ -129,9 +129,9 @@ public class ECE350Disassembler implements Disassembler {
             case 3:
                 return "or $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", $r" + ((insn >> 12) & 31);
             case 4:
-                return "sll $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >>7) & 31);
+                return "sll $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >> 7) & 31);
             case 5:
-                return "sra $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >>7) & 31);
+                return "sra $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", " + ((insn >> 7) & 31);
             case 6:
                 return "mul $r" + ((insn >> 22) & 31) + ", $r" + ((insn >> 17) & 31) + ", $r" + ((insn >> 12) & 31);
             case 7:
