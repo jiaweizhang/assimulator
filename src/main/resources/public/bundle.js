@@ -11,21 +11,7 @@ var Home = Vue.extend({
     <p>Check out Github for instructions</p>
   `
 })
-/*
-var area = document.getElementById('assembler-textarea');
-if (area.addEventListener) {
-  area.addEventListener('input', function() {
-    var link = document.getElementById('download-assembler');
-    link.download = "assembler.asm";
-    link.href = "data:," + area.value;
-    link.click();
-  }, false);
-} else if (area.attachEvent) {
-  area.attachEvent('onpropertychange', function() {
-    alert("Use Google Chrome ya bum");
-  });
-}
-*/
+
 var Assembler = Vue.extend({
   template: `
   <div class="jumbotron text-center"><h1>Assembler</h1></div>
