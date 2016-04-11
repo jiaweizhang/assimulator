@@ -30,7 +30,7 @@ var Assembler = Vue.extend({
   props:['asm', 'mif'],
   methods: {
     assemble: function() {
-        this.$http({url: 'http://localhost/api/assemble', 
+        this.$http({url: 'api/assemble', 
           method: 'POST', 
           data: this.asm,
           headers: {
@@ -65,7 +65,7 @@ var Disassembler = Vue.extend({
   props:['asm', 'mif'],
   methods: {
     disassemble: function() {
-        this.$http({url: 'http://localhost/api/disassemble', 
+        this.$http({url: 'api/disassemble', 
           method: 'POST', 
           data: this.mif,
           headers: {
@@ -100,7 +100,7 @@ var Simulator = Vue.extend({
   props:['asm', 'states'],
   methods: {
     simulate: function() {
-        this.$http({url: 'http://localhost/api/simulate', 
+        this.$http({url: 'api/simulate', 
           method: 'POST', 
           data: this.asm,
           headers: {
@@ -155,7 +155,6 @@ router.map({
 })
 
 router.start(App, '#app')
-
 
 },{"vue":26,"vue-resource":15}],2:[function(require,module,exports){
 /**
