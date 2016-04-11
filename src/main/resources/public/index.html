@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>ADS - Assembler Disassembler Simulator</title>
-</head>
-<body>
-This is the ADS.
-</body>
-</html>
+
+
+<div id="app">
+  <p>.asm goes here</p>
+  <textarea cols="50" rows="20" v-model="asm"></textarea>
+  <button v-on:click="assemble()">Send</button>
+</div>
+
+<footer>
+  <script src="bundle.js"></script>
+</footer>
