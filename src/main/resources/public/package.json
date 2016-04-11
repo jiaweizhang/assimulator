@@ -39,6 +39,7 @@
     "release-csp": "bash build/release-csp.sh"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "envify": "^3.4.0",
     "vue-resource": "^0.7.0"
   },

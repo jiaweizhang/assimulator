@@ -1,11 +1,51 @@
 
+<body id="app">
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <li><a class="navbar-brand" v-link="{path: '/'}">ADS</a></li>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a v-link="{path: '/assembler'}">Assembler</a></li>
+        <li><a v-link="{path: '/disassembler'}">Disassembler</a></li>
+        <li><a v-link="{path: '/simulator'}">Simulator</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <li><a v-link="{path: '/about'}">About</a></li>
+        <li><a v-link="{path: '/login'}">Login</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <router-view></router-view>
+  </div>
 
-<div id="app">
-  <p>.asm goes here</p>
-  <textarea cols="50" rows="20" v-model="asm"></textarea>
-  <button v-on:click="assemble()">Send</button>
+<div class="footer">
+    <div class="container text-center">
+        <p>
+            <a href="https://github.com/jiaweizhang/assembler-disassembler-simulator" target="_blank"><i class="fa fa-github fa-3x"></i></a>
+        </p>
+
+        <p>&copy; Jiawei Zhang, 2016. All rights reserved.</p>
+    </div>
 </div>
 
+</body>
 <footer>
+  <script src="https://cdn.jsdelivr.net/vue.router/0.7.12/vue-router.min.js"></script>
   <script src="bundle.js"></script>
+
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
 </footer>
