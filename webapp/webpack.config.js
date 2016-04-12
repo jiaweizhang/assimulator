@@ -16,8 +16,8 @@ module.exports = {
       // the exclude pattern is important so that we don't
       // apply babel transform to all the dependencies!
       { test: /\.js$/, loader: 'babel', exclude: /node_modules/ }
-    ]
-  },
+      ]
+    },
   // configure babel-loader.
   // this also applies to the JavaScript inside *.vue files
   babel: {

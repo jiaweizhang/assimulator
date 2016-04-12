@@ -2,6 +2,10 @@ import Vue from 'vue'
 import App from './components/App.vue'
 import Home from './components/Home.vue'
 import Assembler from './components/Assembler.vue'
+import Disassembler from './components/Disassembler.vue'
+import Simulator from './components/Simulator.vue'
+import AssemblerHistory from './components/AssemblerHistory.vue'
+import About from './components/About.vue'
 import Signup from './components/Signup.vue'
 import Login from './components/Login.vue'
 import VueRouter from 'vue-router'
@@ -18,11 +22,23 @@ auth.checkAuth()
 export var router = new VueRouter()
 
 router.map({
-  '/home': {
+  '/': {
     component: Home
   },
-  'assembler': {
+  '/assembler': {
     component: Assembler
+  },
+  '/disassembler': {
+    component: Disassembler
+  },
+  '/simulator': {
+    component: Simulator
+  },
+  '/assembler/history': {
+    component: AssemblerHistory
+  },
+  '/about': {
+    component: About
   },
   '/login': {
     component: Login
@@ -33,8 +49,7 @@ router.map({
 })
 
 router.redirect({
-  '*': '/home'
+  '*': '/'
 })
 
 router.start(App, '#app')
-

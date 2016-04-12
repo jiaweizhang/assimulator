@@ -61,7 +61,6 @@ public class Application {
         }
 
         System.out.println(System.getProperty("user.dir"));
-        //String staticFileLocation = System.getProperty("user.dir") + "/src/main/resources/public";
         String staticFileLocation = System.getProperty("user.dir") + "/webapp";
         externalStaticFileLocation(staticFileLocation);
 
@@ -86,11 +85,6 @@ public class Application {
         });
 
         new AuthService(mongo);
-
-        get("/api/random-quote", (req, res) -> {
-            System.out.println("random quote here");
-            return "some random quote";
-        });
     }
 
     private static DB mongo() throws Exception {

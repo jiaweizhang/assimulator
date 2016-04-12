@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-6 col-sm-offset-3">
-  <h1>Assembler Disassembler Simulator</h1>
+    <h1>Fun project I'm doing</h1>
   </div>
 </template>
 

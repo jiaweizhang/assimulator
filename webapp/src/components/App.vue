@@ -10,22 +10,14 @@
         <li><a v-link="{path: '/simulator'}" v-if="user.authenticated">Simulator</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">History
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a v-link="{path: '/assembler/history'}" v-if="user.authenticated">Assembler</a></li>
-              <li><a href="/disassembler/history">Disassembler</a></li>
-              <li><a href="/simulator">Simulator</a></li> 
-            </ul>
-          </li>
-          <li><a v-link="{path: '/about'}">About</a></li>
-          <li><a v-link="{path: '/login'}" v-if="!user.authenticated">Login</a></li>
-          <li><a v-link="{path: '/signup'}" v-if="!user.authenticated">Sign Up</a></li>
-          <li><a v-link="'login'" v-if="user.authenticated" @click="logout()">Logout</a></li>
-        </ul>
-      </div>
-    </nav>
+        <li><a v-link="{path: '/assembler/history'}" v-if="user.authenticated">Assembler History</a></li>
+        <li><a v-link="{path: '/about'}">About</a></li>
+        <li><a v-link="{path: '/login'}" v-if="!user.authenticated">Login</a></li>
+        <li><a v-link="{path: '/signup'}" v-if="!user.authenticated">Sign Up</a></li>
+        <li><a v-link="'login'" v-if="user.authenticated" @click="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
   <div class="container">
     <router-view></router-view>
   </div>
@@ -41,20 +33,20 @@
 </template>
 
 <script>
-import auth from '../auth'
+  import auth from '../auth'
 
-export default {
-  data() {
-    return {
-      user: auth.user
-    }
-  },
+  export default {
+    data() {
+      return {
+        user: auth.user
+      }
+    },
 
-  methods: {
+    methods: {
 
-    logout() {
-      auth.logout()
+      logout() {
+        auth.logout()
+      }
     }
   }
-}
 </script>
