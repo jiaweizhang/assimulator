@@ -22,12 +22,18 @@ var Assembler = Vue.extend({
       <pre>{{errors}}</pre>
     </div>
     <div class="col-sm-6">
+
       <h2 class="text-center">Output (.mif)</h2>
       <pre>{{imem}}</pre>
       <pre>{{dmem}}</pre>
+      <!--
       <a class="btn btn-primary" href="/files/assembler/{{id}}/file.asm" download>Download Asm</a>
       <a class="btn btn-primary" href="/files/assembler/{{id}}/imem.mif" download>Download ImemMif</a>
       <a class="btn btn-primary" href="/files/assembler/{{id}}/dmem.mif" download>Download DmemMif</a>
+      -->
+      <a class="btn btn-primary" id="download-asm" download='file.asm' href="data:application/x-asm,">Download Asm</a>
+      <a class="btn btn-primary" id="download-imem" download='imem.mif' href="data:application/x-mif,">Download Imem</a>
+      <a class="btn btn-primary" id="download-dmem" download='dmem.mif' href="data:application/x-mif,">Download Dmem</a>
     </div>
   </div>
   `,
@@ -58,6 +64,9 @@ var Assembler = Vue.extend({
             a.push(this.id);
             localStorage.setItem('ids', JSON.stringify(a));
           }
+          document.getElementById('download-asm').setAttribute('href', "data:application/x-asm," + encodeURI(this.asm));
+          document.getElementById('download-imem').setAttribute('href', "data:application/x-mif," + encodeURI(this.imem));
+          document.getElementById('download-dmem').setAttribute('href', "data:application/x-mif," + encodeURI(this.dmem));
         }, function (response) {
           // error callback
         })
