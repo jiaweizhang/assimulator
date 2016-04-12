@@ -1,5 +1,7 @@
 .text
 main: addi $1, $0, 1999
+noop
+halt
 add $2, $1, $0
 add $r3, $r2, $r1
 addi $5, $3, 100
