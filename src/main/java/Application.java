@@ -93,7 +93,8 @@ public class Application {
         int instructions = 50;
 
         Assembler a = new ECE350Assembler();
-        List<IntLine> ints = a.parse(strings);
+        a.parse(strings);
+        List<IntLine> ints = a.getImem();
 
         Simulator s = new ECE350Simulator();
         List<ECE350State> states = s.simulate(instructions, ints, new HashMap<Integer, Integer>());

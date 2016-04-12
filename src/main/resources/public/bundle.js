@@ -22,13 +22,15 @@ var Assembler = Vue.extend({
     </div>
     <div class="col-sm-6">
       <h2 class="text-center">Output (.mif)</h2>
-      <pre>{{mif}}</pre>
-      <a class="btn btn-primary" href="/files/assembler/asm/{{asmId}}/file.asm" download>Download Asm</a>
-      <a class="btn btn-primary" href="/files/assembler/mif/{{mifId}}/imem.mif" download>Download Mif</a>
+      <pre>{{imemMif}}</pre>
+      <pre>{{dmemMif}}</pre>
+      <a class="btn btn-primary" href="/files/assembler/{{asmId}}/file.asm" download>Download Asm</a>
+      <a class="btn btn-primary" href="/files/assembler/{{imemMifId}}/imem.mif" download>Download ImemMif</a>
+      <a class="btn btn-primary" href="/files/assembler/{{dmemMifId}}/dmem.mif" download>Download DmemMif</a>
     </div>
   </div>
   `,
-  props:['asm', 'mif', 'asmId', 'mifId'],
+  props:['asm', 'imemMif', 'dmemMif', 'asmId', 'imemMifId', 'dmemMifId'],
   methods: {
     assemble: function() {
         this.$http({url: 'api/assemble', 
@@ -41,8 +43,10 @@ var Assembler = Vue.extend({
           // success callback
           console.log(response);
           this.asmId = response.data.asmId;
-          this.mifId = response.data.mifId;
-          this.mif = response.data.mif;
+          this.imemMifId = response.data.imemMifId;
+          this.imemMif = response.data.imemMif;
+          this.dmemMifId = response.data.dmemMifId;
+          this.dmemMif = response.data.dmemMif;
         }, function (response) {
           // error callback
         })

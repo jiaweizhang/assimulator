@@ -9,8 +9,15 @@ import java.util.*;
  * Created by jiaweizhang on 4/7/16.
  */
 public class ECE350Assembler implements Assembler {
-    Map<String, Integer> labelMap = new HashMap<String, Integer>();
-    Map<String, Integer> dmemMap = new HashMap<String, Integer>();
+    private Map<String, Integer> labelMap = new HashMap<String, Integer>();
+    private List<Integer> dmem = new ArrayList<Integer>();
+    private List<IntLine> imem = new ArrayList<IntLine>();
+    private Map<String, Integer> dmemMap = new HashMap<String, Integer>();
+    private int dmemIndex = 0;
+
+    public List<IntLine> getImem() {
+        return imem;
+    }
 
     /**
      * Wonder if compiler parallelizes these operations
@@ -70,14 +77,24 @@ public class ECE350Assembler implements Assembler {
     }
 
     @Override
-    public List<String> toBinary(List<IntLine> input) {
+    public List<String> toDmemBinary() {
         List<String> strings = new ArrayList<String>();
-        for (IntLine i : input) {
+        for (int i : dmem) {
+            strings.add(String.format("%32s", Integer.toBinaryString(i)).replaceAll(" ", "0"));
+        }
+        return strings;
+    }
+
+    @Override
+    public List<String> toImemBinary() {
+        List<String> strings = new ArrayList<String>();
+        for (IntLine i : imem) {
             strings.add(String.format("%32s", Integer.toBinaryString(i.getInteger())).replaceAll(" ", "0"));
         }
         return strings;
     }
 
+    /*
     @Override
     public List<String> toString(List<IntLine> input) {
         List<String> strings = new ArrayList<String>();
@@ -86,25 +103,90 @@ public class ECE350Assembler implements Assembler {
         }
         return strings;
     }
+    */
+
+    private void processData(List<StringLine> input) {
+        for (StringLine sl: input) {
+            String[] arr = sl.getString().split("\\s+");
+            String label = arr[0].substring(0, arr[0].length()-1);
+            String type = arr[1];
+            String value = arr[2];
+            if (type.equals(".word")) {
+                if (value.startsWith("0x")) {
+                    // TODO
+                    int unHexed = Integer.parseInt(value.substring(2), 16);
+                    dmem.add(unHexed);
+                } else {
+                    // is alphanumeric
+                    dmem.add(Integer.parseInt(value));
+                }
+                dmemMap.put(label, dmemIndex);
+                dmemIndex++;
+            } else if (type.equals(".string")) {
+                dmemMap.put(label, dmemIndex);
+                for (int i=0; i<value.length(); i++) {
+                    int c = (char) value.charAt(i);
+                    dmem.add(c);
+                    dmemIndex++;
+                }
+            } else if (type.equals(".char")) {
+                int c = (char) value.charAt(0);
+                dmem.add(c);
+                dmemMap.put(label, dmemIndex);
+                dmemIndex++;
+            } else {
+                printError(sl.getLine(), "Unrecognized type " + type);
+                return;
+            }
+        }
+    }
+
+    private List<StringLine> getInstructions(List<StringLine> input) {
+        int dotText = -1;
+        int dotData = -1;
+        int dotCustom = -1; // TODO
+        for (int i = 0; i < input.size(); i++) {
+            if (input.get(i).getString().contains(".text")) {
+                dotText = i;
+            } else if (input.get(i).getString().contains(".data")) {
+                dotData = i;
+            }
+        }
+        if (dotText == -1) {
+            printError(0, ".text not found - invalid");
+            return new ArrayList<StringLine>();
+        }
+        if (dotData == -1) {
+            // no .data but .text exists
+            return input.subList(dotText + 1, input.size());
+        }
+        if (dotData <= dotText) {
+            processData(input.subList(dotData+1, dotText));
+            return input.subList(dotText + 1, input.size());
+        }
+        processData(input.subList(dotData+1, input.size()));
+        return input.subList(dotText + 1, dotData);
+    }
 
     @Override
-    public List<IntLine> parse(List<String> input) {
+    public void parse(List<String> input) {
         List<StringLine> sanitized = asmSanitize(input);
+        List<StringLine> instructionWithNoDot = getInstructions(sanitized);
+
         Set<String> insns = new HashSet<String>();
         insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw"));
         List<StringLine> unLabeled = new ArrayList<>();
         int insnCount = 0;
 
-        for (StringLine sl : sanitized) {
+        for (StringLine sl : instructionWithNoDot) {
             String str = sl.getString();
             String[] arr = str.split("[, \\(\\)]+");
             if (!insns.contains(arr[0])) {
                 if (arr[0].charAt(arr[0].length() - 1) != ':') {
                     printError(sl.getLine(), "Unrecognized symbol: " + arr[0]);
-                    return new ArrayList<IntLine>();
+                    return;
                 } else {
                     labelMap.put(arr[0].substring(0, arr[0].length() - 1), insnCount);
-                    //System.out.println(arr[0] + " : "+insnCount);
                     if (arr.length > 1) {
                         // stuff after label
                         StringLine newSL = new StringLine(sl.getLine(), sl.getString().substring(arr[0].length() + 1));
@@ -127,7 +209,7 @@ public class ECE350Assembler implements Assembler {
             parsed.add(new IntLine(sl.getLine(), parsedSingle));
             insnNumber++;
         }
-        return parsed;
+        imem.addAll(parsed);
     }
 
     private Integer parseSingle(int line, String[] arr, int currentLine) {
@@ -139,7 +221,7 @@ public class ECE350Assembler implements Assembler {
                 break;
             case "addi":
                 if (!checkArgs(line, arr[0], arr, 3)) break;
-                bin = (5 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[2]) << 17) + (se(line, arr[3]));
+                bin = (5 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[2]) << 17) + (seLabel(line, arr[3], currentLine));
                 break;
             case "sub":
                 if (!checkArgs(line, arr[0], arr, 3)) break;
@@ -247,11 +329,14 @@ public class ECE350Assembler implements Assembler {
 
     private int seLabel(int line, String num, int currentLine) {
         int n = 0;
-        if (!num.matches("\\d+")) {
+        if (!num.matches("-?\\d+")) {
             if (labelMap.containsKey(num)) {
                 int desiredLine = labelMap.get(num);
                 n = desiredLine - currentLine - 1;
-            } else {
+            } else if (num.startsWith("0x")) {
+                n = Integer.parseInt(num.substring(2), 16);
+            }
+            else {
                 printError(line, "Unknown symbol: " + num);
             }
         } else {

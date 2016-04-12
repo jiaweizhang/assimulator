@@ -1,3 +1,4 @@
+.text
 main: addi $1, $0, 1999
 add $2, $1, $0
 add $r3, $r2, $r1
@@ -16,3 +17,18 @@ lw $16, 0($0)
 sra $11, $2, 0
 end:
 jr $0
+anotherlabel: lw $r3, heapsize($r0)
+lw $r4, wow($r0)
+mul $r5, $r3, $r4
+addi $r7, $r0, 0x0000DF00
+j quit
+dead: addi $r7, $r0, 0x0000DF00
+quit:
+
+.data
+wow: .word 0x0000B504
+mystring: .string ASDASDASDASDASDASD
+var: .char Z
+label: .char A
+heapsize: .word 0x00000000
+myheap: .word 0x00000000

@@ -5,8 +5,10 @@ package assemble;
  */
 public class AssemblerResponse {
     private String asmId;
-    private String mifId;
-    private String mif;
+    private String imemMifId;
+    private String imemMif;
+    private String dmemMifId;
+    private String dmemMif;
 
     public String getAsmId() {
         return asmId;
@@ -16,19 +18,35 @@ public class AssemblerResponse {
         this.asmId = asmId;
     }
 
-    public String getMifId() {
-        return mifId;
+    public String getImemMifId() {
+        return imemMifId;
     }
 
-    public void setMifId(String mifId) {
-        this.mifId = mifId;
+    public void setImemMifId(String imemMifId) {
+        this.imemMifId = imemMifId;
     }
 
-    public String getMif() {
-        return mif;
+    public String getImemMif() {
+        return imemMif;
     }
 
-    public void setMif(String mif) {
-        this.mif = mif;
+    public void setImemMif(String imemMif) {
+        this.imemMif = imemMif;
+    }
+
+    public String getDmemMifId() {
+        return dmemMifId;
+    }
+
+    public void setDmemMifId(String dmemMifId) {
+        this.dmemMifId = dmemMifId;
+    }
+
+    public String getDmemMif() {
+        return dmemMif;
+    }
+
+    public void setDmemMif(String dmemMif) {
+        this.dmemMif = dmemMif;
     }
 }

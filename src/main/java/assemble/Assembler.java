@@ -9,9 +9,12 @@ import java.util.List;
  */
 
 public interface Assembler {
-    public List<String> toBinary(List<IntLine> input);
+    public List<String> toDmemBinary();
 
-    public List<IntLine> parse(List<String> input);
+    public List<String> toImemBinary();
 
-    public List<String> toString(List<IntLine> input);
+    public void parse(List<String> input);
+
+    public List<IntLine> getImem();
+
 }
