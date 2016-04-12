@@ -17,13 +17,13 @@ var Assembler = Vue.extend({
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">.asm goes here</h2>
-      <a id="download-assembler" download='assembler.asm' href="data:application/x-asm,">Download ASM</a>
-      <textarea id="assembler-textarea" v-on:input="inputed()" class="center-block" cols="40" rows="20" v-model="asm"></textarea>
+      <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Send</button>
     </div>
     <div class="col-sm-6">
+      <a id="download-assembler" download='output.mif' href="data:application/x-mif,">Download</a>
       <h2 class="text-center">Output</h2>
-      <pre>{{mif}}</pre>
+      <pre id="assembler-output">{{mif}}</pre>
     </div>
   </div>
   `,
@@ -38,16 +38,14 @@ var Assembler = Vue.extend({
           }
         }).then(function (response) {
           // success callback
+          var content = document.getElementById('assembler-output').html;
+          document.getElementById('download-assembler').setAttribute('href', "data:application/x-mif,encodeURI(" + content + ")");
           console.log(response);
           this.mif = response.data;
         }, function (response) {
           // error callback
         })
-      },
-    inputed: function() {
-      var content = document.getElementById('assembler-textarea').value;
-      document.getElementById('download-assembler').setAttribute('href', "data:application/x-asm," + content);
-    }
+      }
     }
 });
 
@@ -57,13 +55,13 @@ var Disassembler = Vue.extend({
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">.mif goes here</h2>
-      <a id="download-disassembler" download='disassembler.mif' href="data:application/x-mif,">Download MIF</a>
-      <textarea id="disassembler-textarea" class="center-block" v-on:input="inputed()" cols="40" rows="20" v-model="mif"></textarea>
+      <textarea class="center-block" v-on:input="inputed()" cols="40" rows="20" v-model="mif"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="disassemble()">Send</button>
     </div>
     <div class="col-sm-6">
+      <a id="download-disassembler" download='output.asm' href="data:application/x-asm,">Download</a>
       <h2 class="text-center">Output</h2>
-      <pre>{{asm}}</pre>
+      <pre id="disassembler-output">{{asm}}</pre>
     </div>
   </div>
   `,
@@ -78,16 +76,14 @@ var Disassembler = Vue.extend({
           }
         }).then(function (response) {
           // success callback
+          var content = document.getElementById('disassembler-output').html;
+          document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm,encodeURI(" + content + ")");
           console.log(response);
           this.asm = response.data;
         }, function (response) {
           // error callback
         })
-      },
-    inputed: function() {
-      var content = document.getElementById('disassembler-textarea').value;
-      document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm," + content);
-    }
+      }
     }
 });
 
@@ -97,8 +93,7 @@ var Simulator = Vue.extend({
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">.asm goes here</h2>
-      <a id="download-simulator" download='simulator.asm' href="data:application/x-asm,">Download ASM</a>
-      <textarea id="simulator-textarea" class="center-block" cols="40" rows="20" v-model="asm"></textarea>
+      <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="simulate()">Send</button>
     </div>
     <div class="col-sm-6">
@@ -123,11 +118,7 @@ var Simulator = Vue.extend({
         }, function (response) {
           // error callback
         })
-      },
-    inputed: function() {
-      var content = document.getElementById('simulator-textarea').value;
-      document.getElementById('download-simulator').setAttribute('href', "data:application/x-asm," + content);
-    }
+      }
     }
 });
 
