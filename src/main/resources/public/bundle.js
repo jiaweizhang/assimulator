@@ -24,10 +24,11 @@ var Assembler = Vue.extend({
     <div class="col-sm-6">
       <h2 class="text-center">Output</h2>
       <pre>{{mif}}</pre>
+      <a target="_blank" href="/files/assembler/mif/{{id}}/imem.mif" download="imem.mif">Download</a>
     </div>
   </div>
   `,
-  props:['asm', 'mif'],
+  props:['asm', 'mif', 'id'],
   methods: {
     assemble: function() {
         this.$http({url: 'api/assemble', 
@@ -39,7 +40,8 @@ var Assembler = Vue.extend({
         }).then(function (response) {
           // success callback
           console.log(response);
-          this.mif = response.data;
+          this.id = response.data.mifId;
+          this.mif = response.data.mif;
         }, function (response) {
           // error callback
         })

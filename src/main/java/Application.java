@@ -1,5 +1,8 @@
 import assemble.Assembler;
+import assemble.AssemblerService;
 import assemble.ECE350Assembler;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 import disassemble.Disassembler;
 import disassemble.ECE350Disassembler;
 import io.Stringer;
@@ -13,10 +16,10 @@ import spark.Request;
 import spark.Response;
 import spark.Spark;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -25,6 +28,8 @@ import static spark.Spark.*;
  * Created by jiaweizhang on 4/7/16.
  */
 public class Application {
+
+    private static final boolean production = false;
 
     private static final HashMap<String, String> corsHeaders = new HashMap<String, String>();
 
@@ -47,48 +52,26 @@ public class Application {
         Spark.after(filter);
     }
 
-    private static String getStaticFileLocation() {
-        Properties prop = new Properties();
-        InputStream input = null;
-
-        try {
-
-            input = new FileInputStream("config.properties");
-
-            prop.load(input);
-
-            return prop.getProperty("location");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        // TODO
-        return "";
-    }
-
     public static void main(String args[]) {
-        port(80);
-        //staticFileLocation("/public");
-        System.out.println(getStaticFileLocation());
-        externalStaticFileLocation(getStaticFileLocation());
+        if (production) {
+            port(80);
+        } else {
+            port(8080);
+        }
+
+        System.out.println(System.getProperty("user.dir"));
+        String staticFileLocation = System.getProperty("user.dir") + "/src/main/resources/public";
+        externalStaticFileLocation(staticFileLocation);
 
         apply();
 
-        post("/api/assemble", (req, res) -> {
-            Application a = new Application();
-            String[] arr = req.body().split("\n");
-            List<String> list = new ArrayList<String>(Arrays.asList(arr));
-
-            return a.assemble(list);
-        });
+        DB mongo = null;
+        try {
+            mongo = mongo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        new AssemblerService(mongo);
 
         post("/api/disassemble", (req, res) -> {
             Application a = new Application();
@@ -107,14 +90,10 @@ public class Application {
         });
     }
 
-    private String assemble(List<String> strings) {
-        Assembler a = new ECE350Assembler();
-        List<IntLine> ints = a.parse(strings);
-        List<String> readableStrings = a.toString(ints);
-        List<String> binaryStrings = a.toBinary(ints);
-
-        Stringer w = new Stringer();
-        return w.toMif(binaryStrings);
+    private static DB mongo() throws Exception {
+        MongoClient mongoClient = new MongoClient();
+        DB db = mongoClient.getDB("test");
+        return db;
     }
 
     private String disassemble(List<String> strings) {
