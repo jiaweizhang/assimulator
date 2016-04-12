@@ -18,7 +18,8 @@ var Assembler = Vue.extend({
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">.asm goes here</h2>
-      <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
+      <a id="download-assembler" download='assembler.asm' href="data:application/x-asm,">Download ASM</a>
+      <textarea id="assembler-textarea" v-on:input="inputed()" class="center-block" cols="40" rows="20" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Send</button>
     </div>
     <div class="col-sm-6">
@@ -43,7 +44,11 @@ var Assembler = Vue.extend({
         }, function (response) {
           // error callback
         })
-      }
+      },
+    inputed: function() {
+      var content = document.getElementById('assembler-textarea').value;
+      document.getElementById('download-assembler').setAttribute('href', "data:application/x-asm," + content);
+    }
     }
 });
 
@@ -53,7 +58,8 @@ var Disassembler = Vue.extend({
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">.mif goes here</h2>
-      <textarea class="center-block" cols="40" rows="20" v-model="mif"></textarea>
+      <a id="download-disassembler" download='disassembler.mif' href="data:application/x-mif,">Download MIF</a>
+      <textarea id="disassembler-textarea" class="center-block" v-on:input="inputed()" cols="40" rows="20" v-model="mif"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="disassemble()">Send</button>
     </div>
     <div class="col-sm-6">
@@ -78,7 +84,11 @@ var Disassembler = Vue.extend({
         }, function (response) {
           // error callback
         })
-      }
+      },
+    inputed: function() {
+      var content = document.getElementById('disassembler-textarea').value;
+      document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm," + content);
+    }
     }
 });
 
@@ -88,7 +98,8 @@ var Simulator = Vue.extend({
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">.asm goes here</h2>
-      <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
+      <a id="download-simulator" download='simulator.asm' href="data:application/x-asm,">Download ASM</a>
+      <textarea id="simulator-textarea" class="center-block" cols="40" rows="20" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="simulate()">Send</button>
     </div>
     <div class="col-sm-6">
@@ -113,7 +124,11 @@ var Simulator = Vue.extend({
         }, function (response) {
           // error callback
         })
-      }
+      },
+    inputed: function() {
+      var content = document.getElementById('simulator-textarea').value;
+      document.getElementById('download-simulator').setAttribute('href', "data:application/x-asm," + content);
+    }
     }
 });
 
