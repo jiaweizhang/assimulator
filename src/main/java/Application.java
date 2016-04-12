@@ -72,6 +72,15 @@ public class Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        AuthService as = new AuthService(mongo);
+
+        before("/api/protected/*", (req, res) -> {
+            if (!as.verify(req)) {
+                halt(401, "Not authorized");
+            }
+        });
+
         new AssemblerService(mongo);
 
         new DisassemblerService(mongo);
@@ -83,8 +92,6 @@ public class Application {
 
             return a.simulate(list);
         });
-
-        new AuthService(mongo);
     }
 
     private static DB mongo() throws Exception {

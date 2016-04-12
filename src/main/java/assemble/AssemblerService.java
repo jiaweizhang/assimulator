@@ -30,7 +30,7 @@ public class AssemblerService {
     }
 
     private void setupEndpoints() {
-        post("/api/assemble", (req, res) -> {
+        post("/api/protected/assemble", (req, res) -> {
             String[] arr = req.body().split("\n");
             List<String> list = new ArrayList<String>(Arrays.asList(arr));
 

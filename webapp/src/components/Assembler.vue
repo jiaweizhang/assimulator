@@ -40,7 +40,7 @@
 
       assemble() {
         this.$http
-        .post('api/assemble', this.asm, (data) => {
+        .post('api/protected/assemble', this.asm, (data) => {
           this.id = data.id;
           this.imem = data.imem;
           this.dmem = data.dmem;
@@ -62,10 +62,10 @@
           this.processed = true;
           console.log("finished processing");
         }, { 
-          headers: {
-            'Content-Type': 'test/plain',
-            'Authorization': auth.getAuthHeader()
-          }
+          headers: [
+            {'Content-Type': 'test/plain'},
+            auth.getAuthHeader()
+          ]
         })
         .error((err) => console.log(err))
       }
