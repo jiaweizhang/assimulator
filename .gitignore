@@ -1,7 +1,8 @@
 config.properties
 src/main/resources/public/node_modules/*
-
-
+webapp/node_modules/*
+webapp/build/*
+webapp/npm-debug.log
 
 .idea/
 /target/

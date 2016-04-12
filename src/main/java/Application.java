@@ -1,10 +1,13 @@
 import assemble.Assembler;
 import assemble.AssemblerService;
 import assemble.ECE350Assembler;
+import auth.AuthService;
+import com.google.gson.Gson;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import disassemble.DisassemblerService;
 import io.Stringer;
+import models.Credentials;
 import models.ECE350State;
 import models.IntLine;
 import simulate.ECE350Simulator;
@@ -58,7 +61,8 @@ public class Application {
         }
 
         System.out.println(System.getProperty("user.dir"));
-        String staticFileLocation = System.getProperty("user.dir") + "/src/main/resources/public";
+        //String staticFileLocation = System.getProperty("user.dir") + "/src/main/resources/public";
+        String staticFileLocation = System.getProperty("user.dir") + "/webapp";
         externalStaticFileLocation(staticFileLocation);
 
         apply();
@@ -79,6 +83,13 @@ public class Application {
             List<String> list = new ArrayList<String>(Arrays.asList(arr));
 
             return a.simulate(list);
+        });
+
+        new AuthService(mongo);
+
+        get("/api/random-quote", (req, res) -> {
+            System.out.println("random quote here");
+            return "some random quote";
         });
     }
 
