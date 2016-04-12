@@ -1,4 +1,4 @@
-package assemble;
+package disassemble;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -6,8 +6,8 @@ import com.mongodb.DBCollection;
 import db.JsonTransformer;
 import io.Stringer;
 import models.Asm;
-import models.IntLine;
 import models.Mif;
+import models.StringLine;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -19,79 +19,77 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 /**
- * Created by jiaweizhang on 4/11/16.
+ * Created by jiaweizhang on 4/12/16.
  */
-public class AssemblerService {
+public class DisassemblerService {
     private final DB db;
-    private final DBCollection assemblerasms;
-    private final DBCollection assemblermifs;
+    private final DBCollection disassembleasms;
+    private final DBCollection disassemblemifs;
 
-    public AssemblerService(DB db) {
+    public DisassemblerService(DB db) {
         this.db = db;
-        this.assemblerasms = db.getCollection("assemblerasms");
-        this.assemblermifs = db.getCollection("assemblermifs");
+        this.disassembleasms = db.getCollection("disassemblerasms");
+        this.disassemblemifs = db.getCollection("disassemblermifs");
         setupEndpoints();
     }
 
     private void setupEndpoints() {
-        post("/api/assemble", (req, res) -> {
+        post("/api/disassemble", (req, res) -> {
             String[] arr = req.body().split("\n");
             List<String> list = new ArrayList<String>(Arrays.asList(arr));
 
-            ObjectId asmId = createAsm(req.body());
+            ObjectId mifId = createMif(req.body());
             res.status(201);
 
-            String result = assemble(list);
+            String result = disassemble(list);
 
-            ObjectId mifId = createMif(result);
-            AssemblerResponse ar = new AssemblerResponse();
+            ObjectId asmId = createAsm(result);
+            DisassemblerResponse ar = new DisassemblerResponse();
             ar.setAsmId(asmId.toString());
             ar.setMifId(mifId.toString());
-            ar.setMif(result);
+            ar.setAsm(result);
             return ar;
         }, new JsonTransformer());
 
-        get("/files/assembler/asm/:id/file.asm", (req, res) -> {
+        get("/files/disassembler/asm/:id/file.asm", (req, res) -> {
             //res.header("Content-Disposition", "attachment; filename=\"file.asm\"");
             return findAsm(req.params(":id")).getAsm();
         });
 
-        get("/files/assembler/mif/:id/imem.mif", (req, res) -> {
+        get("/files/disassembler/mif/:id/imem.mif", (req, res) -> {
             //res.header("Content-Disposition", "attachment; filename=imem.mif");
             return findMif(req.params(":id")).getMif();
         });
     }
 
-    private String assemble(List<String> strings) {
-        Assembler a = new ECE350Assembler();
-        List<IntLine> ints = a.parse(strings);
-        List<String> readableStrings = a.toString(ints);
-        List<String> binaryStrings = a.toBinary(ints);
+    private String disassemble(List<String> strings) {
+        Disassembler d = new ECE350Disassembler();
+        List<StringLine> parsed = d.parse(strings);
+        List<String> readable = d.toString(parsed);
 
         Stringer w = new Stringer();
-        return w.toMif(binaryStrings);
+        return w.toAsm(readable);
     }
 
     public ObjectId createAsm(String body) {
-        //Asm asm = new Gson().fromJson(body, Asm.class);
         BasicDBObject doc = new BasicDBObject("asm", body).append("createdOn", new Date());
-        assemblerasms.insert(doc);
+        disassembleasms.insert(doc);
         ObjectId id = (ObjectId)doc.get( "_id" );
         return id;
     }
 
     public Asm findAsm(String id) {
-        return new Asm((BasicDBObject) assemblerasms.findOne(new BasicDBObject("_id", new ObjectId(id))));
+        return new Asm((BasicDBObject) disassembleasms.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
 
     public ObjectId createMif(String body) {
         BasicDBObject doc = new BasicDBObject("mif", body).append("createdOn", new Date());
-        assemblermifs.insert(doc);
+        disassemblemifs.insert(doc);
         ObjectId id = (ObjectId)doc.get( "_id" );
         return id;
     }
 
     public Mif findMif(String id) {
-        return new Mif((BasicDBObject) assemblermifs.findOne(new BasicDBObject("_id", new ObjectId(id))));
+        return new Mif((BasicDBObject) disassemblemifs.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
 }

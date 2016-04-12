@@ -3,12 +3,10 @@ import assemble.AssemblerService;
 import assemble.ECE350Assembler;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
-import disassemble.Disassembler;
-import disassemble.ECE350Disassembler;
+import disassemble.DisassemblerService;
 import io.Stringer;
 import models.ECE350State;
 import models.IntLine;
-import models.StringLine;
 import simulate.ECE350Simulator;
 import simulate.Simulator;
 import spark.Filter;
@@ -73,13 +71,7 @@ public class Application {
         }
         new AssemblerService(mongo);
 
-        post("/api/disassemble", (req, res) -> {
-            Application a = new Application();
-            String[] arr = req.body().split("\n");
-            List<String> list = new ArrayList<String>(Arrays.asList(arr));
-
-            return a.disassemble(list);
-        });
+        new DisassemblerService(mongo);
 
         post("/api/simulate", (req, res) -> {
             Application a = new Application();
@@ -94,15 +86,6 @@ public class Application {
         MongoClient mongoClient = new MongoClient();
         DB db = mongoClient.getDB("test");
         return db;
-    }
-
-    private String disassemble(List<String> strings) {
-        Disassembler d = new ECE350Disassembler();
-        List<StringLine> parsed = d.parse(strings);
-        List<String> readable = d.toString(parsed);
-
-        Stringer w = new Stringer();
-        return w.toAsm(readable);
     }
 
     private String simulate(List<String> strings) {

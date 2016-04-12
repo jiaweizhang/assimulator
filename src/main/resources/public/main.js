@@ -13,21 +13,21 @@ var Home = Vue.extend({
 
 var Assembler = Vue.extend({
   template: `
-  <div class="jumbotron text-center"><h1>Assembler</h1></div>
   <div class="row">
     <div class="col-sm-6">
-      <h2 class="text-center">.asm goes here</h2>
+      <h2 class="text-center">Input (.asm)</h2>
       <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
-      <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Send</button>
+      <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Assemble</button>
     </div>
     <div class="col-sm-6">
-      <h2 class="text-center">Output</h2>
+      <h2 class="text-center">Output (.mif)</h2>
       <pre>{{mif}}</pre>
-      <a target="_blank" href="/files/assembler/mif/{{id}}/imem.mif" download="imem.mif">Download</a>
+      <a class="btn btn-primary" href="/files/assembler/asm/{{asmId}}/file.asm" download>Download Asm</a>
+      <a class="btn btn-primary" href="/files/assembler/mif/{{mifId}}/imem.mif" download>Download Mif</a>
     </div>
   </div>
   `,
-  props:['asm', 'mif', 'id'],
+  props:['asm', 'mif', 'asmId', 'mifId'],
   methods: {
     assemble: function() {
         this.$http({url: 'api/assemble', 
@@ -39,7 +39,8 @@ var Assembler = Vue.extend({
         }).then(function (response) {
           // success callback
           console.log(response);
-          this.id = response.data.mifId;
+          this.asmId = response.data.asmId;
+          this.mifId = response.data.mifId;
           this.mif = response.data.mif;
         }, function (response) {
           // error callback
@@ -50,20 +51,21 @@ var Assembler = Vue.extend({
 
 var Disassembler = Vue.extend({
   template: `
-  <div class="jumbotron text-center"><h1>Disassembler</h1></div>
   <div class="row">
     <div class="col-sm-6">
-      <h2 class="text-center">.mif goes here</h2>
+      <h2 class="text-center">Input (.mif)</h2>
       <textarea class="center-block" cols="40" rows="20" v-model="mif"></textarea>
-      <button type="button" class="btn btn-primary center-block" v-on:click="disassemble()">Send</button>
+      <button type="button" class="btn btn-primary center-block" v-on:click="disassemble()">Disassemble</button>
     </div>
     <div class="col-sm-6">
-      <h2 class="text-center">Output</h2>
+      <h2 class="text-center">Output (.asm)</h2>
       <pre>{{asm}}</pre>
+      <a class="btn btn-primary" href="/files/disassembler/asm/{{asmId}}/file.asm" download>Download Asm</a>
+      <a class="btn btn-primary" href="/files/disassembler/mif/{{mifId}}/imem.mif" download>Download Mif</a>
     </div>
   </div>
   `,
-  props:['asm', 'mif'],
+  props:['asm', 'mif', 'mifId', 'asmId'],
   methods: {
     disassemble: function() {
         this.$http({url: 'api/disassemble', 
@@ -75,7 +77,9 @@ var Disassembler = Vue.extend({
         }).then(function (response) {
           // success callback
           console.log(response);
-          this.asm = response.data;
+          this.asm = response.data.asm;
+          this.asmId = response.data.asmId;
+          this.mifId = response.data.mifId;
         }, function (response) {
           // error callback
         })
@@ -85,10 +89,9 @@ var Disassembler = Vue.extend({
 
 var Simulator = Vue.extend({
   template: `
-  <div class="jumbotron text-center"><h1>Simulator</h1></div>
   <div class="row">
     <div class="col-sm-6">
-      <h2 class="text-center">.asm goes here</h2>
+      <h2 class="text-center">Input (.asm)</h2>
       <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="simulate()">Send</button>
     </div>
