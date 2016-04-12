@@ -6,8 +6,6 @@ import com.mongodb.DBCollection;
 import db.JsonTransformer;
 import io.Stringer;
 import models.Asm;
-import models.IntLine;
-import models.Mif;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -88,7 +86,7 @@ public class AssemblerService {
         //Asm asm = new Gson().fromJson(body, Asm.class);
         BasicDBObject doc = new BasicDBObject("asm", asm).append("imem", imemMif).append("dmem", dmemMif).append("createdOn", new Date());
         assembler.insert(doc);
-        ObjectId id = (ObjectId)doc.get( "_id" );
+        ObjectId id = (ObjectId) doc.get("_id");
         return id;
     }
 

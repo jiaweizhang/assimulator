@@ -49,7 +49,7 @@
           password: this.credentials.password
         }
 
-        auth.signup(this, credentials, 'secretquote')
+        auth.signup(this, credentials, '/assembler')
       }
     }
   }

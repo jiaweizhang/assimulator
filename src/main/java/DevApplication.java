@@ -2,7 +2,6 @@ import assemble.Assembler;
 import assemble.ECE350Assembler;
 import io.Reader;
 import io.Stringer;
-import models.IntLine;
 
 import java.io.FileNotFoundException;
 import java.util.List;

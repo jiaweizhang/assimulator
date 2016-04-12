@@ -42,11 +42,7 @@ export default {
           router.go(redirect)        
         }
       } else {
-        context.error = "Invalid username or password";
-      }
-
-      if(redirect) {
-        router.go(redirect)        
+        context.error = "Username taken";
       }
 
     }).error((err) => {

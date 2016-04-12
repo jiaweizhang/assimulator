@@ -49,10 +49,10 @@
           password: this.credentials.password
         }
 
-        auth.login(this, credentials, 'secretquote')
+        auth.login(this, credentials, '/assembler')
 
       }
     }
-    
+
   }
 </script>

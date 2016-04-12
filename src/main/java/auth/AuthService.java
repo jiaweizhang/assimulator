@@ -1,8 +1,7 @@
 package auth;
 
 import com.google.gson.Gson;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
+import com.mongodb.*;
 import db.JsonTransformer;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -33,9 +32,10 @@ public class AuthService {
         post("/api/signup", (req, res) -> {
             Credentials cred = new Gson().fromJson(req.body(), Credentials.class);
             System.out.println(cred.getUsername() + ": username");
+
             AuthResponse ar = new AuthResponse();
             ar.setId_token(createJwt(cred.getUsername()));
-            if (cred.getUsername().equals("username")) {
+            if (createUser(cred.getUsername(), cred.getPassword())) {
                 return ar;
             } else {
                 return "";
@@ -44,15 +44,51 @@ public class AuthService {
 
         post("/api/login", (req, res) -> {
             Credentials cred = new Gson().fromJson(req.body(), Credentials.class);
-            System.out.println(cred.getUsername() + ": username");
+            System.out.println(cred.getUsername() + " >> username");
             AuthResponse ar = new AuthResponse();
             ar.setId_token(createJwt(cred.getUsername()));
-            if (cred.getUsername().equals("username")) {
+            if (loginUser(cred.getUsername(), cred.getPassword())) {
                 return ar;
             } else {
                 return "";
             }
         }, new JsonTransformer());
+    }
+
+    private boolean createUser(String username, String password) {
+        String hash = null;
+        try {
+            hash = PasswordStorage.createHash(password);
+        } catch (PasswordStorage.CannotPerformOperationException e) {
+            return false;
+        }
+
+        DBObject query = new BasicDBObject("username", username);
+        DBCursor result = auth.find(query);
+        if (result.size() >= 1) {
+            return false;
+        }
+
+        BasicDBObject doc = new BasicDBObject("username", username).append("hash", hash).append("createdOn", new Date());
+        auth.insert(doc);
+        return true;
+    }
+
+    private boolean loginUser(String username, String password) {
+        DBObject query = new BasicDBObject("username", username);
+        DBCursor result = auth.find(query);
+        String hash = null;
+        while (result.hasNext()) {
+            hash = result.next().get("hash").toString();
+            System.out.println(hash);
+        }
+        try {
+            return PasswordStorage.verifyPassword(password, hash);
+        } catch (PasswordStorage.CannotPerformOperationException e) {
+            return false;
+        } catch (PasswordStorage.InvalidHashException e) {
+            return false;
+        }
     }
 
     private String createJwt(String username) {

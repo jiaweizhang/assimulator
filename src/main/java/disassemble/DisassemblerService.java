@@ -74,7 +74,7 @@ public class DisassemblerService {
     public ObjectId createAsm(String body) {
         BasicDBObject doc = new BasicDBObject("asm", body).append("createdOn", new Date());
         disassembleasms.insert(doc);
-        ObjectId id = (ObjectId)doc.get( "_id" );
+        ObjectId id = (ObjectId) doc.get("_id");
         return id;
     }
 
@@ -85,7 +85,7 @@ public class DisassemblerService {
     public ObjectId createMif(String body) {
         BasicDBObject doc = new BasicDBObject("mif", body).append("createdOn", new Date());
         disassemblemifs.insert(doc);
-        ObjectId id = (ObjectId)doc.get( "_id" );
+        ObjectId id = (ObjectId) doc.get("_id");
         return id;
     }
 

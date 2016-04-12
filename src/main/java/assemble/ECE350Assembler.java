@@ -107,9 +107,9 @@ public class ECE350Assembler implements Assembler {
     */
 
     private void processData(List<StringLine> input) {
-        for (StringLine sl: input) {
+        for (StringLine sl : input) {
             String[] arr = sl.getString().split("\\s+");
-            String label = arr[0].substring(0, arr[0].length()-1);
+            String label = arr[0].substring(0, arr[0].length() - 1);
             String type = arr[1];
             String value = arr[2];
             if (type.equals(".word")) {
@@ -125,7 +125,7 @@ public class ECE350Assembler implements Assembler {
                 dmemIndex++;
             } else if (type.equals(".string")) {
                 dmemMap.put(label, dmemIndex);
-                for (int i=0; i<value.length(); i++) {
+                for (int i = 0; i < value.length(); i++) {
                     int c = (char) value.charAt(i);
                     dmem.add(c);
                     dmemIndex++;
@@ -162,10 +162,10 @@ public class ECE350Assembler implements Assembler {
             return input.subList(dotText + 1, input.size());
         }
         if (dotData <= dotText) {
-            processData(input.subList(dotData+1, dotText));
+            processData(input.subList(dotData + 1, dotText));
             return input.subList(dotText + 1, input.size());
         }
-        processData(input.subList(dotData+1, input.size()));
+        processData(input.subList(dotData + 1, input.size()));
         return input.subList(dotText + 1, dotData);
     }
 
@@ -344,8 +344,7 @@ public class ECE350Assembler implements Assembler {
                 n = desiredLine - currentLine - 1;
             } else if (num.startsWith("0x")) {
                 n = Integer.parseInt(num.substring(2), 16);
-            }
-            else {
+            } else {
                 printError(line, "Unknown symbol: " + num);
             }
         } else {
@@ -442,7 +441,7 @@ public class ECE350Assembler implements Assembler {
             return "No errors";
         }
         StringBuilder sb = new StringBuilder();
-        for (String error: errors) {
+        for (String error : errors) {
             sb.append(error + "\n");
         }
         return sb.toString();
