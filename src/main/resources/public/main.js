@@ -38,8 +38,8 @@ var Assembler = Vue.extend({
           }
         }).then(function (response) {
           // success callback
-          var content = document.getElementById('assembler-output').html;
-          document.getElementById('download-assembler').setAttribute('href', "data:application/x-mif,encodeURI(" + content + ")");
+          var content = document.getElementById('assembler-output').innerHTML;
+          document.getElementById('download-assembler').setAttribute('href', "data:application/x-mif," + encodeURI(content));
           console.log(response);
           this.mif = response.data;
         }, function (response) {
@@ -76,8 +76,8 @@ var Disassembler = Vue.extend({
           }
         }).then(function (response) {
           // success callback
-          var content = document.getElementById('disassembler-output').html;
-          document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm,encodeURI(" + content + ")");
+          var content = document.getElementById('disassembler-output').innerHTML;
+          document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm," + content);
           console.log(response);
           this.asm = response.data;
         }, function (response) {
