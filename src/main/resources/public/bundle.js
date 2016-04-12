@@ -24,15 +24,15 @@ var Assembler = Vue.extend({
     </div>
     <div class="col-sm-6">
       <h2 class="text-center">Output (.mif)</h2>
-      <pre>{{imemMif}}</pre>
-      <pre>{{dmemMif}}</pre>
-      <a class="btn btn-primary" href="/files/assembler/{{asmId}}/file.asm" download>Download Asm</a>
-      <a class="btn btn-primary" href="/files/assembler/{{imemMifId}}/imem.mif" download>Download ImemMif</a>
-      <a class="btn btn-primary" href="/files/assembler/{{dmemMifId}}/dmem.mif" download>Download DmemMif</a>
+      <pre>{{imem}}</pre>
+      <pre>{{dmem}}</pre>
+      <a class="btn btn-primary" href="/files/assembler/{{id}}/file.asm" download>Download Asm</a>
+      <a class="btn btn-primary" href="/files/assembler/{{id}}/imem.mif" download>Download ImemMif</a>
+      <a class="btn btn-primary" href="/files/assembler/{{id}}/dmem.mif" download>Download DmemMif</a>
     </div>
   </div>
   `,
-  props:['asm', 'imemMif', 'dmemMif', 'asmId', 'imemMifId', 'dmemMifId', 'errors'],
+  props:['asm', 'imem', 'dmem', 'id', 'errors'],
   methods: {
     assemble: function() {
         this.$http({url: 'api/assemble', 
@@ -44,11 +44,9 @@ var Assembler = Vue.extend({
         }).then(function (response) {
           // success callback
           console.log(response);
-          this.asmId = response.data.asmId;
-          this.imemMifId = response.data.imemMifId;
-          this.imemMif = response.data.imemMif;
-          this.dmemMifId = response.data.dmemMifId;
-          this.dmemMif = response.data.dmemMif;
+          this.id = response.data.id;
+          this.imem = response.data.imem;
+          this.dmem = response.data.dmem;
           this.errors = response.data.errors;
         }, function (response) {
           // error callback

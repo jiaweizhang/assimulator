@@ -22,14 +22,10 @@ import static spark.Spark.post;
  * Created by jiaweizhang on 4/11/16.
  */
 public class AssemblerService {
-    private final DBCollection assemblerasms;
-    private final DBCollection assemblerImemMifs;
-    private final DBCollection assemblerDmemMifs;
+    private final DBCollection assembler;
 
     public AssemblerService(DB db) {
-        this.assemblerasms = db.getCollection("assemblerasms");
-        this.assemblerImemMifs = db.getCollection("assemblerimemmifs");
-        this.assemblerDmemMifs = db.getCollection("assemblerdmemmifs");
+        this.assembler = db.getCollection("assembler");
         setupEndpoints();
     }
 
@@ -38,36 +34,38 @@ public class AssemblerService {
             String[] arr = req.body().split("\n");
             List<String> list = new ArrayList<String>(Arrays.asList(arr));
 
-            ObjectId asmId = createAsm(req.body());
             res.status(201);
 
             String[] result = assemble(list);
 
-            ObjectId imemMifId = createImemMif(result[0]);
-            ObjectId dmemMifId = createDmemMif(result[1]);
+            String asm = req.body();
+            String imem = result[0];
+            String dmem = result[1];
+
+            ObjectId id = create(asm, imem, dmem);
+
             AssemblerResponse ar = new AssemblerResponse();
-            ar.setAsmId(asmId.toString());
-            ar.setImemMifId(imemMifId.toString());
-            ar.setImemMif(result[0]);
-            ar.setDmemMifId(dmemMifId.toString());
-            ar.setDmemMif(result[1]);
+            ar.setId(id.toString());
+            ar.setAsm(asm);
+            ar.setImem(imem);
+            ar.setDmem(dmem);
             ar.setErrors(result[2]);
             return ar;
         }, new JsonTransformer());
 
         get("/files/assembler/:id/file.asm", (req, res) -> {
             //res.header("Content-Disposition", "attachment; filename=\"file.asm\"");
-            return findAsm(req.params(":id")).getAsm();
+            return find(req.params(":id")).getAsm();
         });
 
         get("/files/assembler/:id/imem.mif", (req, res) -> {
             //res.header("Content-Disposition", "attachment; filename=imem.mif");
-            return findImemMif(req.params(":id")).getMif();
+            return find(req.params(":id")).getImem();
         });
 
         get("/files/assembler/:id/dmem.mif", (req, res) -> {
             //res.header("Content-Disposition", "attachment; filename=imem.mif");
-            return findDmemMif(req.params(":id")).getMif();
+            return find(req.params(":id")).getDmem();
         });
     }
 
@@ -86,37 +84,15 @@ public class AssemblerService {
         return returnArr;
     }
 
-    public ObjectId createAsm(String body) {
+    public ObjectId create(String asm, String imemMif, String dmemMif) {
         //Asm asm = new Gson().fromJson(body, Asm.class);
-        BasicDBObject doc = new BasicDBObject("asm", body).append("createdOn", new Date());
-        assemblerasms.insert(doc);
+        BasicDBObject doc = new BasicDBObject("asm", asm).append("imem", imemMif).append("dmem", dmemMif).append("createdOn", new Date());
+        assembler.insert(doc);
         ObjectId id = (ObjectId)doc.get( "_id" );
         return id;
     }
 
-    public Asm findAsm(String id) {
-        return new Asm((BasicDBObject) assemblerasms.findOne(new BasicDBObject("_id", new ObjectId(id))));
-    }
-
-    public ObjectId createImemMif(String body) {
-        BasicDBObject doc = new BasicDBObject("mif", body).append("createdOn", new Date());
-        assemblerImemMifs.insert(doc);
-        ObjectId id = (ObjectId)doc.get( "_id" );
-        return id;
-    }
-
-    public Mif findImemMif(String id) {
-        return new Mif((BasicDBObject) assemblerImemMifs.findOne(new BasicDBObject("_id", new ObjectId(id))));
-    }
-
-    public ObjectId createDmemMif(String body) {
-        BasicDBObject doc = new BasicDBObject("mif", body).append("createdOn", new Date());
-        assemblerDmemMifs.insert(doc);
-        ObjectId id = (ObjectId)doc.get( "_id" );
-        return id;
-    }
-
-    public Mif findDmemMif(String id) {
-        return new Mif((BasicDBObject) assemblerDmemMifs.findOne(new BasicDBObject("_id", new ObjectId(id))));
+    public Asm find(String id) {
+        return new Asm((BasicDBObject) assembler.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
 }
