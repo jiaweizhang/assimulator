@@ -17,4 +17,8 @@ public interface Assembler {
 
     public List<IntLine> getImem();
 
+    public List<String> getErrors();
+
+    public String getErrorString();
+
 }

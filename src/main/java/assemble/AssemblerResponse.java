@@ -9,6 +9,7 @@ public class AssemblerResponse {
     private String imemMif;
     private String dmemMifId;
     private String dmemMif;
+    private String errors;
 
     public String getAsmId() {
         return asmId;
@@ -48,5 +49,13 @@ public class AssemblerResponse {
 
     public void setDmemMif(String dmemMif) {
         this.dmemMif = dmemMif;
+    }
+
+    public String getErrors() {
+        return errors;
+    }
+
+    public void setErrors(String errors) {
+        this.errors = errors;
     }
 }

@@ -14,6 +14,7 @@ public class ECE350Assembler implements Assembler {
     private List<IntLine> imem = new ArrayList<IntLine>();
     private Map<String, Integer> dmemMap = new HashMap<String, Integer>();
     private int dmemIndex = 0;
+    private List<String> errors = new ArrayList<String>();
 
     public List<IntLine> getImem() {
         return imem;
@@ -418,6 +419,21 @@ public class ECE350Assembler implements Assembler {
     }
 
     private void printError(int line, String message) {
+        errors.add("Assemble Error - Line " + line + ": " + message);
         System.out.println("Assemble Error - Line " + line + ": " + message);
+    }
+
+    @Override
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    @Override
+    public String getErrorString() {
+        StringBuilder sb = new StringBuilder();
+        for (String error: errors) {
+            sb.append(error + "\n");
+        }
+        return sb.toString();
     }
 }

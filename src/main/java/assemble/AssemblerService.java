@@ -51,6 +51,7 @@ public class AssemblerService {
             ar.setImemMif(result[0]);
             ar.setDmemMifId(dmemMifId.toString());
             ar.setDmemMif(result[1]);
+            ar.setErrors(result[2]);
             return ar;
         }, new JsonTransformer());
 
@@ -78,9 +79,10 @@ public class AssemblerService {
 
         Stringer w = new Stringer();
 
-        String[] returnArr = new String[2];
+        String[] returnArr = new String[3];
         returnArr[0] = w.toMif(imemStrings);
         returnArr[1] = w.toMif(dmemStrings);
+        returnArr[2] = a.getErrorString();
         return returnArr;
     }
 

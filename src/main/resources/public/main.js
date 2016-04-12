@@ -18,6 +18,8 @@ var Assembler = Vue.extend({
       <h2 class="text-center">Input (.asm)</h2>
       <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Assemble</button>
+      <h3 class="text-center">Assemble Errors</h3>
+      <pre>{{errors}}</pre>
     </div>
     <div class="col-sm-6">
       <h2 class="text-center">Output (.mif)</h2>
@@ -29,7 +31,7 @@ var Assembler = Vue.extend({
     </div>
   </div>
   `,
-  props:['asm', 'imemMif', 'dmemMif', 'asmId', 'imemMifId', 'dmemMifId'],
+  props:['asm', 'imemMif', 'dmemMif', 'asmId', 'imemMifId', 'dmemMifId', 'errors'],
   methods: {
     assemble: function() {
         this.$http({url: 'api/assemble', 
@@ -46,6 +48,7 @@ var Assembler = Vue.extend({
           this.imemMif = response.data.imemMif;
           this.dmemMifId = response.data.dmemMifId;
           this.dmemMif = response.data.dmemMif;
+          this.errors = response.data.errors;
         }, function (response) {
           // error callback
         })
