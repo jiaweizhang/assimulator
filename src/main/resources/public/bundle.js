@@ -24,7 +24,7 @@ var Assembler = Vue.extend({
     <div class="col-sm-6">
       <a id="download-assembler" download='output.mif' href="data:application/x-mif,">Download</a>
       <h2 class="text-center">Output</h2>
-      <pre id="assembler-output">{{mif}}</pre>
+      <pre>{{mif}}</pre>
     </div>
   </div>
   `,
@@ -39,10 +39,9 @@ var Assembler = Vue.extend({
           }
         }).then(function (response) {
           // success callback
-          var content = document.getElementById('assembler-output').innerHTML;
-          document.getElementById('download-assembler').setAttribute('href', "data:application/x-mif," + encodeURI(content));
           console.log(response);
           this.mif = response.data;
+          document.getElementById('download-assembler').setAttribute('href', "data:application/x-mif," + encodeURI(response.data));
         }, function (response) {
           // error callback
         })
@@ -62,7 +61,7 @@ var Disassembler = Vue.extend({
     <div class="col-sm-6">
       <a id="download-disassembler" download='output.asm' href="data:application/x-asm,">Download</a>
       <h2 class="text-center">Output</h2>
-      <pre id="disassembler-output">{{asm}}</pre>
+      <pre>{{asm}}</pre>
     </div>
   </div>
   `,
@@ -77,9 +76,8 @@ var Disassembler = Vue.extend({
           }
         }).then(function (response) {
           // success callback
-          var content = document.getElementById('disassembler-output').innerHTML;
-          document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm," + content);
           console.log(response);
+          document.getElementById('download-disassembler').setAttribute('href', "data:application/x-asm," + encodeURI(response.data));
           this.asm = response.data;
         }, function (response) {
           // error callback
