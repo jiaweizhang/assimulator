@@ -34,4 +34,8 @@ public class Asm {
     public String getDmem() {
         return dmem;
     }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
 }

@@ -48,6 +48,17 @@ var Assembler = Vue.extend({
           this.imem = response.data.imem;
           this.dmem = response.data.dmem;
           this.errors = response.data.errors;
+          var arr = localStorage.getItem("ids");
+          if (arr) {
+            var a = [];
+            a = JSON.parse(arr);
+            a.push(this.id);
+            localStorage.setItem('ids', JSON.stringify(a));
+          } else {
+            var a = [];
+            a.push(this.id);
+            localStorage.setItem('ids', JSON.stringify(a));
+          }
         }, function (response) {
           // error callback
         })
@@ -127,6 +138,22 @@ var Simulator = Vue.extend({
     }
 });
 
+var AssemblerHistory = Vue.extend({
+  template: `
+  <div>
+    <li v-for="id in ids">
+      <a class="btn btn-primary" href="/files/assembler/{{id}}/file.asm" download>Download Asm</a>
+      <a class="btn btn-primary" href="/files/assembler/{{id}}/imem.mif" download>Download ImemMif</a>
+      <a class="btn btn-primary" href="/files/assembler/{{id}}/dmem.mif" download>Download DmemMif</a>
+    </li>
+  </div>
+  `,
+  props:['ids'],
+  ready: function() {
+    this.ids = JSON.parse(localStorage.getItem("ids"));
+  }
+})
+
 var About = Vue.extend({
   template: `
     <div>Fun project I'm doing</div>
@@ -155,6 +182,9 @@ router.map({
   },
   '/simulator': {
     component: Simulator
+  },
+  '/assembler/history': {
+    component: AssemblerHistory
   },
   '/about': {
     component: About
