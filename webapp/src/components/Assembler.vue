@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">Input (.asm)</h2>
-      <textarea class="center-block" cols="40" rows="20" v-model="asm"></textarea>
+      <textarea class="lined center-block" cols="50" rows="39" v-model="asm"></textarea>
       <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Assemble</button>
       <h3 v-show="processed" class="text-center">Assemble Errors</h3>
       <pre v-show="processed">{{errors}}</pre>
@@ -24,6 +24,10 @@
 
 <script>
   import auth from '../auth'
+
+  $(function() {
+    $(".lined").linedtextarea();
+  });
 
   export default {
 
@@ -65,8 +69,8 @@
           console.log("finished processing");
         }, { 
           headers: [
-            {'Content-Type': 'test/plain'},
-            auth.getAuthHeader()
+          {'Content-Type': 'test/plain'},
+          auth.getAuthHeader()
           ]
         })
         .error((err) => console.log(err))

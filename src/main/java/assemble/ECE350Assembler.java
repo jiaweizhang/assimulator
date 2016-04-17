@@ -271,7 +271,7 @@ public class ECE350Assembler implements Assembler {
                 break;
             case "blt":
                 if (!checkArgs(line, arr[0], arr, 3)) break;
-                bin = (5 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[2]) << 17) + (seLabel(line, arr[3], currentLine));
+                bin = (6 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[2]) << 17) + (seLabel(line, arr[3], currentLine));
                 break;
             case "bex":
                 if (!checkArgs(line, arr[0], arr, 1)) break;
