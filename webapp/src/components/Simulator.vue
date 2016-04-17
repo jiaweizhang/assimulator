@@ -1,4 +1,7 @@
 <template>
+  <div>
+    <h2>Functionality is disabled</h2>
+  </div>
   <div class="row">
     <div class="col-sm-6">
       <h2 class="text-center">Input (.asm)</h2>

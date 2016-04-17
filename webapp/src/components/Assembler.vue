@@ -10,12 +10,14 @@
     <div class="col-sm-6">
 
       <h2 class="text-center">Output (.mif)</h2>
-      <pre v-show="processed">{{imem}}</pre>
-      <pre v-show="processed">{{dmem}}</pre>
-      
+
       <a v-show="processed" class="btn btn-primary" id="download-asm" download='file.asm' href="data:application/x-asm,">Download Asm</a>
       <a v-show="processed" class="btn btn-primary" id="download-imem" download='imem.mif' href="data:application/x-mif,">Download Imem</a>
       <a v-show="processed" class="btn btn-primary" id="download-dmem" download='dmem.mif' href="data:application/x-mif,">Download Dmem</a>
+
+      <pre v-show="processed">{{imem}}</pre>
+      <pre v-show="processed">{{dmem}}</pre>
+      
     </div>
   </div>
 </template>
