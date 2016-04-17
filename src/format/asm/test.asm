@@ -2,8 +2,11 @@
 main: addi $1, $0, 1999
 noop
 halt
+sw $r18, -640($r7)
 add $2, $1, $0
 add $r3, $r2, $r1
+bgt $0, $1, main
+addi $4, $6, -120
 addi $5, $3, 100
 bne $3, $2, middle
 addi $6, $1, 65535

@@ -73,11 +73,13 @@ public class Application {
 
         AuthService as = new AuthService(mongo);
 
+        /*
         before("/api/protected/*", (req, res) -> {
             if (!as.verify(req)) {
                 halt(401, "Not authorized");
             }
         });
+        */
 
         new AssemblerService(mongo);
 

@@ -176,7 +176,7 @@ public class ECE350Assembler implements Assembler {
 
         Set<String> insns = new HashSet<String>();
         insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw", "noop", "halt"));
-        insns.addAll(Arrays.asList("beq", "swd", "tty"));
+        insns.addAll(Arrays.asList("beq", "swd", "tty", "bgt"));
         List<StringLine> unLabeled = new ArrayList<>();
         int insnCount = 0;
 
@@ -309,6 +309,10 @@ public class ECE350Assembler implements Assembler {
                 if (!checkArgs(line, arr[0], arr, 1)) break;
                 bin = (30 << 27) + (reg(line, arr[1]) << 22);
                 break;
+            case "bgt":
+                if (!checkArgs(line, arr[0], arr, 3)) break;
+                bin = (5 << 27) + (reg(line, arr[1]) << 17) + (reg(line, arr[2]) << 22) + (seLabel(line, arr[3], currentLine));
+                break;
             default:
                 printError(line, "Unknown symbol: " + arr[0]);
                 bin = 0;
@@ -329,7 +333,7 @@ public class ECE350Assembler implements Assembler {
 
     private int seLabelDmem(int line, String num) {
         int n = 0;
-        if (!num.matches("\\d+")) {
+        if (!num.matches("-?\\d+")) {
             if (dmemMap.containsKey(num)) {
                 n = dmemMap.get(num);
             } else {
@@ -411,6 +415,12 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int reg(int line, String input) {
+        if (input.equals("$ra")) {
+            return 31;
+        }
+        if (input.equals("sp")) {
+            return 30;
+        }
         // not sure why OR regex isn't working but this works
         if (!input.matches("\\$(\\d)+") & !input.matches("\\$r(\\d)+")) {
             printError(line, "Register does not match format $(0-9)+ or $r(0-9)+");

@@ -75,7 +75,8 @@
 
     route: {
       canActivate() {
-        return auth.user.authenticated
+        //return auth.user.authenticated
+        return true;
       }
     }
 

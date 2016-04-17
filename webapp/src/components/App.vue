@@ -5,7 +5,7 @@
         <li><a class="navbar-brand" v-link="{path: '/'}">ADS</a></li>
       </div>
       <ul class="nav navbar-nav">
-        <li><a v-link="{path: '/assembler'}" v-if="user.authenticated">Assembler</a></li>
+        <li><a v-link="{path: '/assembler'}">Assembler</a></li>
         <li><a v-link="{path: '/disassembler'}" v-if="user.authenticated">Disassembler</a></li>
         <li><a v-link="{path: '/simulator'}" v-if="user.authenticated">Simulator</a></li>
       </ul>
