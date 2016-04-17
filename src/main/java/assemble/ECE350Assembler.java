@@ -176,6 +176,7 @@ public class ECE350Assembler implements Assembler {
 
         Set<String> insns = new HashSet<String>();
         insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw", "noop", "halt"));
+        insns.addAll(Arrays.asList("beq", "swd", "tty"));
         List<StringLine> unLabeled = new ArrayList<>();
         int insnCount = 0;
 
@@ -295,6 +296,18 @@ public class ECE350Assembler implements Assembler {
             case "halt":
                 if (!checkArgs(line, arr[0], arr, 0)) break;
                 bin = (1 << 27) + currentLine;
+                break;
+            case "beq":
+                if (!checkArgs(line, arr[0], arr, 3)) break;
+                bin = (16 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[2]) << 17) + (seLabel(line, arr[3], currentLine));
+                break;
+            case "swd":
+                if (!checkArgs(line, arr[0], arr, 3)) break;
+                bin = (17 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[3]) << 17) + (seLabelDmem(line, arr[2]));
+                break;
+            case "tty":
+                if (!checkArgs(line, arr[0], arr, 1)) break;
+                bin = (30 << 27) + (reg(line, arr[1]) << 22);
                 break;
             default:
                 printError(line, "Unknown symbol: " + arr[0]);
