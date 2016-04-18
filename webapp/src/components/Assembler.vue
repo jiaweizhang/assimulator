@@ -12,7 +12,7 @@
 
       <div id="editor"></div>
       
-    <h3 v-show="processed" class="text-center">Assemble Errors</h3>
+    <h3 v-show="processed" class="text-center">Assembly Errors</h3>
     <pre v-show="processed">{{errors}}</pre>
   </div>
   <div class="col-sm-6">
