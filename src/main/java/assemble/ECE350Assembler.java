@@ -166,6 +166,7 @@ public class ECE350Assembler implements Assembler {
         Set<String> insns = new HashSet<String>();
         insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw"));
         insns.addAll(Arrays.asList("beq", "swd", "tty", "bgt", "noop", "nop", "halt"));
+        insns.addAll(Arrays.asList("vga"));
         List<StringLine> unLabeled = new ArrayList<>();
         int insnCount = 0;
 
@@ -306,6 +307,10 @@ public class ECE350Assembler implements Assembler {
                 if (!checkArgs(line, arr[0], arr, 3)) break;
                 bin = (6 << 27) + (reg(line, arr[1]) << 17) + (reg(line, arr[2]) << 22) + (seLabel(line, arr[3], currentLine));
                 break;
+            case "vga":
+                if (!checkArgs(line, arr[0], arr, 3)) break;
+                bin = (7 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[3]) << 17) + (1 << 16) + (seLabelDmem16(line, arr[2]));
+                break;
             default:
                 printError(line, "Unknown symbol: " + arr[0]);
                 bin = 0;
@@ -343,6 +348,29 @@ public class ECE350Assembler implements Assembler {
         if (n < 0) {
             // add 2^17
             return n + 131072;
+        }
+        return n;
+    }
+
+    private int seLabelDmem16(int line, String num) {
+        num = num.trim();
+        int n = 0;
+        if (!num.matches("-?\\d+")) {
+            if (dmemMap.containsKey(num)) {
+                n = dmemMap.get(num);
+            } else {
+                printError(line, "Unknown symbol: " + num);
+            }
+        } else {
+            n = Integer.parseInt(num);
+        }
+        if (n < -32768 | n > 32767) {
+            printError(line, "N must be between 2^-15 and 2^15-1");
+            return 0;
+        }
+        if (n < 0) {
+            // add 2^16
+            return n + 65536;
         }
         return n;
     }
