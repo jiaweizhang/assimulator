@@ -38,10 +38,6 @@
 <script>
   import auth from '../auth'
 
-  $(function() {
-    $(".lined").linedtextarea();
-  });
-
   export default {
 
     data() {
