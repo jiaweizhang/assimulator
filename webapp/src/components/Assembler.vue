@@ -77,7 +77,7 @@ myheap: .word 0x00000000`,
       this.editor = ace.edit("editor");
       this.editor.setTheme("ace/theme/github");
       //this.editor.getSession().setMode("ace/mode/javascript");
-      this.editor.setValue(this.asm);
+      this.editor.setValue(this.asm, -1);
     },
 
     methods: {
