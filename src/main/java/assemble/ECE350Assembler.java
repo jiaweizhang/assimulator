@@ -53,7 +53,7 @@ public class ECE350Assembler implements Assembler {
         for (StringLine line : input) {
             String trimmed = line.getString().trim();
             if (trimmed.length() > 0) {
-                output.add(line);
+                output.add(new StringLine(line.getLine(), trimmed));
             }
         }
         return output;
@@ -94,17 +94,6 @@ public class ECE350Assembler implements Assembler {
         }
         return strings;
     }
-
-    /*
-    @Override
-    public List<String> toString(List<IntLine> input) {
-        List<String> strings = new ArrayList<String>();
-        for (IntLine i : input) {
-            strings.add(String.format("%4d: ", i.getLine()) + String.format("%32s", Integer.toBinaryString(i.getInteger())).replaceAll(" ", "0"));
-        }
-        return strings;
-    }
-    */
 
     private void processData(List<StringLine> input) {
         for (StringLine sl : input) {

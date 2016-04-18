@@ -10,7 +10,9 @@
         <h2>Input (.asm)</h2>
       </div>
       
-      <textarea class="lined" cols="60" rows="39" v-model="asm"></textarea>
+      <textarea 
+      onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
+      class="lined" cols="60" rows="39" v-model="asm"></textarea>
       <h3 v-show="processed" class="text-center">Assemble Errors</h3>
       <pre v-show="processed">{{errors}}</pre>
     </div>
@@ -28,7 +30,7 @@
 
       <pre v-show="processed">{{imem}}</pre>
       <pre v-show="processed">{{dmem}}</pre>
-      
+
     </div>
   </div>
 </template>
