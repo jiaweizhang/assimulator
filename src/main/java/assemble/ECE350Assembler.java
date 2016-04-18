@@ -300,7 +300,7 @@ public class ECE350Assembler implements Assembler {
                 break;
             case "bgt":
                 if (!checkArgs(line, arr[0], arr, 3)) break;
-                bin = (5 << 27) + (reg(line, arr[1]) << 17) + (reg(line, arr[2]) << 22) + (seLabel(line, arr[3], currentLine));
+                bin = (6 << 27) + (reg(line, arr[1]) << 17) + (reg(line, arr[2]) << 22) + (seLabel(line, arr[3], currentLine));
                 break;
             default:
                 printError(line, "Unknown symbol: " + arr[0]);
