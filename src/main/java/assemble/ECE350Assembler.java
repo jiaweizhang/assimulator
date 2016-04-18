@@ -164,8 +164,8 @@ public class ECE350Assembler implements Assembler {
         List<StringLine> instructionWithNoDot = getInstructions(sanitized);
 
         Set<String> insns = new HashSet<String>();
-        insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw", "noop", "halt"));
-        insns.addAll(Arrays.asList("beq", "swd", "tty", "bgt"));
+        insns.addAll(Arrays.asList("add", "addi", "sub", "and", "or", "sll", "sra", "mul", "div", "j", "bne", "jal", "jr", "blt", "bex", "setx", "sw", "lw"));
+        insns.addAll(Arrays.asList("beq", "swd", "tty", "bgt", "noop", "nop", "halt"));
         List<StringLine> unLabeled = new ArrayList<>();
         int insnCount = 0;
 
@@ -279,6 +279,10 @@ public class ECE350Assembler implements Assembler {
                 bin = (8 << 27) + (reg(line, arr[1]) << 22) + (reg(line, arr[3]) << 17) + (seLabelDmem(line, arr[2]));
                 break;
             case "noop":
+                if (!checkArgs(line, arr[0], arr, 0)) break;
+                bin = 0;
+                break;
+            case "nop":
                 if (!checkArgs(line, arr[0], arr, 0)) break;
                 bin = 0;
                 break;
