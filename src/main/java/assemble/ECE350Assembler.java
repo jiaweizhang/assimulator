@@ -171,7 +171,7 @@ public class ECE350Assembler implements Assembler {
 
         for (StringLine sl : instructionWithNoDot) {
             String str = sl.getString();
-            String[] arr = str.split("[, \\(\\)]+");
+            String[] arr = str.split("[\\s+,\\(\\)]+");
             if (!insns.contains(arr[0])) {
                 if (arr[0].charAt(arr[0].length() - 1) != ':') {
                     printError(sl.getLine(), "Unrecognized symbol: " + arr[0]);
@@ -195,7 +195,7 @@ public class ECE350Assembler implements Assembler {
         int insnNumber = 0;
         for (StringLine sl : unLabeled) {
             String str = sl.getString();
-            String[] arr = str.split("[, \\(\\)]+");
+            String[] arr = str.split("[\\s+,\\(\\)]+");
             Integer parsedSingle = parseSingle(sl.getLine(), arr, insnNumber);
             parsed.add(new IntLine(sl.getLine(), parsedSingle));
             insnNumber++;
@@ -321,6 +321,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int seLabelDmem(int line, String num) {
+        num = num.trim();
         int n = 0;
         if (!num.matches("-?\\d+")) {
             if (dmemMap.containsKey(num)) {
@@ -343,6 +344,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int seLabel(int line, String num, int currentLine) {
+        num = num.trim();
         int n = 0;
         if (!num.matches("-?\\d+")) {
             if (labelMap.containsKey(num)) {
@@ -368,6 +370,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int bigNLabel(int line, String bigN) {
+        bigN = bigN.trim();
         int n = 0;
         if (!bigN.matches("\\d+")) {
             if (labelMap.containsKey(bigN)) {
@@ -386,6 +389,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int bigN(int line, String bigN) {
+        bigN = bigN.trim();
         int n = Integer.parseInt(bigN);
         if (n < 0 | n > 134217727) {
             printError(line, "N must be between 0 and 2^27-1");
@@ -395,6 +399,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int smt(int line, String amt) {
+        amt = amt.trim();
         int n = Integer.parseInt(amt);
         if (n < 0 | n > 31) {
             printError(line, "Shamt must be between 0 and 31");
@@ -404,6 +409,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int reg(int line, String input) {
+        input = input.trim();
         if (input.equals("$ra")) {
             return 31;
         }
@@ -425,6 +431,7 @@ public class ECE350Assembler implements Assembler {
     }
 
     private int se(int line, String num) {
+        num = num.trim();
         int n = Integer.parseInt(num);
         if (n < -65536 | n > 65535) {
             printError(line, "N must be between 2^-16 and 2^16-1");
