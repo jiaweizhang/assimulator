@@ -1,19 +1,30 @@
 <template>
   <div class="row">
     <div class="col-sm-6">
-      <h2 class="text-center">Input (.asm)</h2>
-      <textarea class="lined center-block" cols="50" rows="39" v-model="asm"></textarea>
-      <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Assemble</button>
+      <div class='page-header'>
+        <div class='btn-toolbar pull-right'>
+          <div class='btn-group'>
+            <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Assemble</button>
+          </div>
+        </div>
+        <h2>Input (.asm)</h2>
+      </div>
+      
+      <textarea class="lined" cols="60" rows="39" v-model="asm"></textarea>
       <h3 v-show="processed" class="text-center">Assemble Errors</h3>
       <pre v-show="processed">{{errors}}</pre>
     </div>
     <div class="col-sm-6">
-
-      <h2 class="text-center">Output (.mif)</h2>
-
-      <a v-show="processed" class="btn btn-primary" id="download-asm" download='file.asm' href="data:application/x-asm,">Download Asm</a>
-      <a v-show="processed" class="btn btn-primary" id="download-imem" download='imem.mif' href="data:application/x-mif,">Download Imem</a>
-      <a v-show="processed" class="btn btn-primary" id="download-dmem" download='dmem.mif' href="data:application/x-mif,">Download Dmem</a>
+      <div class='page-header'>
+        <div class='btn-toolbar pull-right'>
+          <div class='btn-group'>
+            <a v-show="processed" class="btn btn-primary" id="download-asm" download='file.asm' href="data:application/x-asm,">Download Asm</a>
+            <a v-show="processed" class="btn btn-primary" id="download-imem" download='imem.mif' href="data:application/x-mif,">Download Imem</a>
+            <a v-show="processed" class="btn btn-primary" id="download-dmem" download='dmem.mif' href="data:application/x-mif,">Download Dmem</a>
+          </div>
+        </div>
+        <h2>Output (.mif)</h2>
+      </div>
 
       <pre v-show="processed">{{imem}}</pre>
       <pre v-show="processed">{{dmem}}</pre>
