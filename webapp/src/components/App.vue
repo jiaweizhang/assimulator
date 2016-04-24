@@ -3,7 +3,7 @@
     <nav class="navbar navbar-default">
       <div class="container">
         <div class="navbar-header">
-          <li><a class="navbar-brand" v-link="{path: '/'}">ADS</a></li>
+          <a class="navbar-brand" v-link="{path: '/'}">ADS</a>
         </div>
         <ul class="nav navbar-nav">
           <li><a v-link="{path: '/assembler'}">Assembler</a></li>
