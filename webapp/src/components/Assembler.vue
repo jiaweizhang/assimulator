@@ -4,6 +4,7 @@
       <div class='page-header'>
         <div class='btn-toolbar pull-right'>
           <div class='btn-group'>
+            <button type="button" class="btn btn-primary center-block" v-on:click="clear()">Clear</button>
             <button type="button" class="btn btn-primary center-block" v-on:click="assemble()">Assemble</button>
           </div>
         </div>
@@ -52,6 +53,7 @@ sw $r18, -640($r7)
 bne $3, $2, middle
 addi $6, $1, 65535
 addi $7, $1, -65536
+
 middle:
 sub $8, $2, $1
 and $9, $2, $1
@@ -103,6 +105,11 @@ myheap: .word 0x00000000`,
           ]
         })
         .error((err) => console.log(err))
+      },
+      clear() {
+        this.asm = '';
+        this.editor.setValue(this.asm, -1);
+        console.log("cleared asm");
       }
     },
 
