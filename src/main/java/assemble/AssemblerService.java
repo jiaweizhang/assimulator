@@ -1,5 +1,9 @@
 package assemble;
 
+import assemble.parser.InstructionGrammar;
+import assemble.parser.InstructionGrammarData;
+import assemble.parser.InstructionGrammarParser;
+import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -28,6 +32,16 @@ public class AssemblerService {
     }
 
     private void setupEndpoints() {
+        post("/test", (req, res) -> {
+            //List<InstructionGrammarData> instructionGrammarDatas = new Gson().fromJson(req.body(), List.class);
+            //List<InstructionGrammar> instructionGrammars = InstructionGrammarParser.process(instructionGrammarDatas);
+
+            List<String> str = new Gson().fromJson(req.body(), List.class);
+
+
+            return str;
+        }, new JsonTransformer());
+
         post("/api/protected/assemble", (req, res) -> {
             String[] arr = req.body().split("\n");
             List<String> list = new ArrayList<String>(Arrays.asList(arr));
