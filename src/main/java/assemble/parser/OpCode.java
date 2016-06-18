@@ -5,10 +5,10 @@ package assemble.parser;
  */
 public class OpCode {
     public int opCode;
-    public int insnIndex;
+    public int index;
 
-    public OpCode (int opCode, int insnIndex) {
+    public OpCode(int opCode, int index) {
         this.opCode = opCode;
-        this.insnIndex = insnIndex;
+        this.index = index;
     }
 }

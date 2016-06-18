@@ -5,10 +5,12 @@ package assemble.parser;
  */
 public class SingleVar {
     public int numBits;
-    public int insnIndex;
+    public int index;
+    public boolean isBranch;
 
-    public SingleVar (int numBits, int insnIndex) {
+    public SingleVar(int numBits, int index, boolean isBranch) {
         this.numBits = numBits;
-        this.insnIndex = insnIndex;
+        this.index = index;
+        this.isBranch = isBranch;
     }
 }
