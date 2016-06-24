@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class AssemblyParser {
 	// map from instruction name to grammar describing the instruction
 	private Map<String, InstructionGrammar> instructionGrammarMap;
-	private Map<String, MacroGrammar> pseudoInstructionGrammarMap;
+	private Map<String, MacroGrammar> macroGrammarMap;
 
 	// list of errors generated
 	private List<String> errors;
@@ -23,7 +23,7 @@ public class AssemblyParser {
 
 	public AssemblyParser() {
 		this.instructionGrammarMap = new HashMap<>();
-		this.pseudoInstructionGrammarMap = new HashMap<>();
+		this.macroGrammarMap = new HashMap<>();
 	}
 
 	/***
@@ -54,10 +54,10 @@ public class AssemblyParser {
 	}
 
 	/***
-	 * Set the pseudoinstructions
+	 * Set the macro instruction grammars
 	 */
-	public void setPseudoInstructionGrammars(List<MacroGrammar> macroGrammars) {
-		this.pseudoInstructionGrammarMap = macroGrammars
+	public void setMacroGrammars(List<MacroGrammar> macroGrammars) {
+		this.macroGrammarMap = macroGrammars
 				.stream()
 				.collect(Collectors.toMap(ig -> ig.name, ig -> ig));
 	}
@@ -241,8 +241,8 @@ public class AssemblyParser {
 		List<Line> expandedPseudoInstructions = new ArrayList<Line>();
 		for (Line l : noWhiteSpace) {
 			String instructionName = l.text.split("\\s+")[0];
-			if (pseudoInstructionGrammarMap.containsKey(instructionName)) {
-				MacroGrammar macroGrammar = pseudoInstructionGrammarMap.get(instructionName);
+			if (macroGrammarMap.containsKey(instructionName)) {
+				MacroGrammar macroGrammar = macroGrammarMap.get(instructionName);
 				pattern = Pattern.compile(macroGrammar.regex);
 				Matcher matcher = pattern.matcher(l.text.substring(instructionName.length()));
 				if (matcher.find()) {

@@ -22,7 +22,7 @@ public class AssemblyGrammarTest {
 
         String pseudoInstructionGrammarJson = readFile("src/data/ece350macrogrammar.json", Charset.defaultCharset());
         List<MacroGrammar> macroGrammars = Arrays.asList(new Gson().fromJson(pseudoInstructionGrammarJson, MacroGrammar[].class));
-        assemblyParser.setPseudoInstructionGrammars(macroGrammars);
+        assemblyParser.setMacroGrammars(macroGrammars);
 
         String instructionGrammarJson = readFile("src/data/ece350instructiongrammar.json", Charset.defaultCharset());
         List<InstructionGrammar> instructionGrammars = Arrays.asList(new Gson().fromJson(instructionGrammarJson, InstructionGrammar[].class));
