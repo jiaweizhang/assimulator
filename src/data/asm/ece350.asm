@@ -38,3 +38,4 @@ var: .char Z
 label: .char A
 heapsize: .word 0x00000000
 myheap: .word 0x00000000
+randomint: .int 82

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by jiaweizhang on 6/17/2016.
  */
-public class PseudoInstructionGrammar {
+public class MacroGrammar {
     // using regex matcher
     // example:
     // bgt -> blt

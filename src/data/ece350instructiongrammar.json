@@ -1,101 +1,438 @@
 [
-   {
-      "name":"add",
-      "regex":"\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
-      "vars":[
-         {
-            "numBits":5,
-            "index":22,
-            "isBranch":false
-         },
-         {
-            "numBits":5,
-            "index":17,
-            "isBranch":false
-         },
-         {
-            "numBits":5,
-            "index":12,
-            "isBranch":false
-         }
-      ],
-      "opCodes":[
-         {
-            "opCode":0,
-            "index":2
-         }
-      ]
-   },
-    {
-      "name":"addi",
-      "regex":"\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*(-?[a-zA-Z0-9]+)\\s*",
-      "vars":[
-         {
-            "numBits":5,
-            "index":22,
-            "isBranch":false
-         },
-         {
-            "numBits":5,
-            "index":17,
-            "isBranch":false
-         },
-         {
-            "numBits":17,
-            "index":0,
-            "isBranch":false
-         }
-      ],
-      "opCodes":[
-         {
-            "opCode":5,
-            "index":27
-         }
-      ]
-   },
-   {
-      "name":"sub",
-      "regex":"\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
-      "vars":[
-         {
-            "numBits":5,
-            "index":22,
-            "isBranch":false
-         },
-         {
-            "numBits":5,
-            "index":17,
-            "isBranch":false
-         },
-         {
-            "numBits":5,
-            "index":12,
-            "isBranch":false
-         }
-      ],
-      "opCodes":[
-         {
-            "opCode":1,
-            "index":2
-         }
-      ]
-   }
-   ,
-   {
-      "name":"j",
-      "regex":"\\s*(-?[a-zA-Z0-9]+)\\s*",
-      "vars":[
-         {
-            "numBits":27,
-            "index":0,
-            "isBranch":false
-         }
-      ],
-      "opCodes":[
-         {
-            "opCode":1,
-            "index":27
-         }
-      ]
-   }
+	{
+		"name": "add",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 12,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 0,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "addi",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": -17,
+				"index": 0,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 5,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "sub",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 12,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 1,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "and",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 12,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 2,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "or",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 12,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 3,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "sll",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 7,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 4,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "sra",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 7,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 5,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "mul",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 12,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 6,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "div",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 12,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 7,
+				"index": 2
+			}
+		]
+	},
+	{
+		"name": "j",
+		"regex": "\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 27,
+				"index": 0,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 1,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "bne",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": -17,
+				"index": 0,
+				"isBranch": true
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 2,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "jal",
+		"regex": "\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 27,
+				"index": 0,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 3,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "jr",
+		"regex": "\\s*\\$(\\d+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 4,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "blt",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*\\$(\\d+)\\s*,\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			},
+			{
+				"numBits": -17,
+				"index": 0,
+				"isBranch": true
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 6,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "bex",
+		"regex": "\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 27,
+				"index": 0,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 22,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "setx",
+		"regex": "\\s*(-?[a-zA-Z0-9]+)\\s*",
+		"vars": [
+			{
+				"numBits": 27,
+				"index": 0,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 21,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "sw",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*(-?[a-zA-Z0-9]+)\\s*\\(\\s*\\$(\\d+)\\s*\\)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": -17,
+				"index": 0,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 7,
+				"index": 27
+			}
+		]
+	},
+	{
+		"name": "lw",
+		"regex": "\\s*\\$(\\d+)\\s*,\\s*(-?[a-zA-Z0-9]+)\\s*\\(\\s*\\$(\\d+)\\s*\\)\\s*",
+		"vars": [
+			{
+				"numBits": 5,
+				"index": 22,
+				"isBranch": false
+			},
+			{
+				"numBits": -17,
+				"index": 0,
+				"isBranch": false
+			},
+			{
+				"numBits": 5,
+				"index": 17,
+				"isBranch": false
+			}
+		],
+		"opCodes": [
+			{
+				"opCode": 8,
+				"index": 27
+			}
+		]
+	}
 ]

@@ -1,6 +1,6 @@
 import assemble.parser.AssemblyParser;
 import assemble.parser.InstructionGrammar;
-import assemble.parser.PseudoInstructionGrammar;
+import assemble.parser.MacroGrammar;
 import com.google.gson.Gson;
 import org.junit.Test;
 
@@ -10,8 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by jiaweizhang on 6/17/2016.
@@ -22,15 +20,15 @@ public class AssemblyGrammarTest {
     public void Test() throws IOException {
         AssemblyParser assemblyParser = new AssemblyParser();
 
-        String pseudoInstructionGrammarJson = readFile("src/data/ece350pseudoinstructiongrammar.json", Charset.defaultCharset());
-        List<PseudoInstructionGrammar> pseudoInstructionGrammars = Arrays.asList(new Gson().fromJson(pseudoInstructionGrammarJson, PseudoInstructionGrammar[].class));
-        assemblyParser.setPseudoInstructionGrammars(pseudoInstructionGrammars);
+        String pseudoInstructionGrammarJson = readFile("src/data/ece350macrogrammar.json", Charset.defaultCharset());
+        List<MacroGrammar> macroGrammars = Arrays.asList(new Gson().fromJson(pseudoInstructionGrammarJson, MacroGrammar[].class));
+        assemblyParser.setPseudoInstructionGrammars(macroGrammars);
 
         String instructionGrammarJson = readFile("src/data/ece350instructiongrammar.json", Charset.defaultCharset());
         List<InstructionGrammar> instructionGrammars = Arrays.asList(new Gson().fromJson(instructionGrammarJson, InstructionGrammar[].class));
         assemblyParser.setInstructionGrammars(instructionGrammars);
 
-        List<String> assembly = Files.readAllLines(Paths.get("src/data/ece350.asm"), Charset.defaultCharset());
+        List<String> assembly = Files.readAllLines(Paths.get("src/data/asm/ece350.asm"), Charset.defaultCharset());
 
         assemblyParser.process(assembly);
 

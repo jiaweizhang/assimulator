@@ -1,8 +1,5 @@
 package assemble;
 
-import assemble.parser.InstructionGrammar;
-import assemble.parser.InstructionGrammarData;
-import assemble.parser.InstructionGrammarParser;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
