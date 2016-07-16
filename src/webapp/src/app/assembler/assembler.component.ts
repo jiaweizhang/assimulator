@@ -13,7 +13,7 @@ import {Observable} from 'rxjs/Rx';
 export class AssemblerComponent implements OnInit {
 	binary: string;
 
-	constructor(private http:Http) {
+	constructor(private http?:Http) {
 		this.binary = '0000';
 	}
 
