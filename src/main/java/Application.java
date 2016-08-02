@@ -23,7 +23,7 @@ public class Application {
 		}
 
 		System.out.println(System.getProperty("user.dir"));
-		String staticFileLocation = System.getProperty("user.dir") + "/src/webapp/dist";
+		String staticFileLocation = System.getProperty("user.dir") + "/src/static";
 		externalStaticFileLocation(staticFileLocation);
 
 		enableCORS("*", "*", "*");
