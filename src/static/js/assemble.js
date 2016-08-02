@@ -42,17 +42,36 @@ setTimeout(function () {
         self.instructionGrammars = ko.observable("");
         self.macroGrammars = ko.observable("");
         self.binary = ko.observable("");
-        self.errors = ko.observable("");
-        self.json = ko.pureComputed(function () {
+        self.returnedErrors = ko.observable("");
+        self.instructionGrammarErrors = ko.observable("");
+        self.macroGrammarErrors = ko.observable("");
+        self.errors = ko.computed(function() {
+            return self.instructionGrammarErrors() + "\n" + self.macroGrammarErrors() + "\n" + self.returnedErrors();
+        });
+        self.json = ko.computed(function () {
             var instructionsObj = self.instructions().split("\n");
-            var instructionGrammarsObj = self.instructionGrammars() ? JSON.parse(self.instructionGrammars()) : [];
-            var macroGrammarsObj = self.macroGrammars() ? JSON.parse(self.macroGrammars()) : [];
+            var instructionGrammarsObj;
+            try {
+                instructionGrammarsObj = JSON.parse(self.instructionGrammars());
+                self.instructionGrammarErrors("");
+            }
+            catch (err) {
+                self.instructionGrammarErrors('Instruction Grammars: ' + err);
+            }
+            var macroGrammarsObj;
+            try {
+                macroGrammarsObj = JSON.parse(self.macroGrammars())
+                self.macroGrammarErrors("");
+            }
+            catch (err) {
+                self.macroGrammarErrors('Macro Grammars: ' + err);
+            }
             return {
                 instructions: instructionsObj,
                 instructionGrammars: instructionGrammarsObj,
                 macroGrammars: macroGrammarsObj
             };
-        }, this).extend({rateLimit: 500});
+        }, this).extend({rateLimit: 100});
 
         self.post = function () {
             console.log("posting data: ");
@@ -66,7 +85,7 @@ setTimeout(function () {
                 success: function (returnedData) {
                     var binaryJson = JSON.parse(returnedData);
                     self.binary(binaryJson.binary);
-                    self.errors(binaryJson.errors);
+                    self.returnedErrors(binaryJson.errors);
                 }
             });
         }
