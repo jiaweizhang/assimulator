@@ -13,7 +13,7 @@ public class Assembler {
     private ISA isa;
     private List<Error> errors;
     private Map<String, Integer> dataMap;
-    private int dataIndex;
+    private DataMemory dataMemory;
 
     public Assembler(List<String> lines, ISA isa) {
         this.lines = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Assembler {
 
         this.isa = isa;
         this.dataMap = new HashMap<>();
-        this.dataIndex = 0;
+        this.dataMemory = new DataMemory();
     }
 
     public void assemble() {
@@ -91,23 +91,57 @@ public class Assembler {
             String[] strings = d.line.split("\\s+");
             if (strings.length != 3) {
                 report(d, "data must contain label, type, and value");
+                return;
             }
-            validateDataLabel(strings[0], d);
-            switch(strings[1]) {
+            String label = validateDataLabel(strings[0], d);
+            switch (strings[1]) {
                 case ".char":
                     //
+                    if (strings[2].length() != 1) {
+                        report(d, "failed to parse char. Not a single char");
+                        return;
+                    }
+                    int intValue = strings[2].charAt(0);
+                    int index = dataMemory.addData(Collections.singletonList(intValue));
+                    dataMap.put(label, index);
                     break;
                 case ".word":
                     //
+                    int value = 0;
+                    if (strings[2].startsWith("0x") || strings[2].startsWith("0X")) {
+                        // parse as hex
+                        try {
+                            value = Integer.parseInt(strings[2], 16);
+                        } catch (Exception e) {
+                            report(d, "failed to parse hex word");
+                            return;
+                        }
+                    } else {
+                        // parse as dec
+                        try {
+                            value = Integer.parseInt(strings[2]);
+                        } catch (Exception e) {
+                            report(d, "failed to parse decimal word");
+                            return;
+                        }
+                    }
+                    int index2 = dataMemory.addData(Collections.singletonList(value));
+                    dataMap.put(label, index2);
                     break;
                 case ".string":
                     //
+                    List<Integer> characters = new ArrayList<Integer>();
+                    for (int i = 0; i < strings[2].length(); i++) {
+                        // for each character
+                        characters.add((int) strings[2].charAt(i));
+                    }
+                    int index3 = dataMemory.addData(characters);
+                    dataMap.put(label, index3);
                     break;
                 default:
                     report(d, "invalid data type");
-                    break;
+                    return;
             }
-            dataMap.put(strings[0].substring(0, strings[0].length()-1), dataIndex);
         });
     }
 
@@ -115,7 +149,7 @@ public class Assembler {
 
     }
 
-    private void validateDataLabel(String label, Line d) {
+    private String validateDataLabel(String label, Line d) {
         // make sure ends with :
         if (label.charAt(label.length() - 1) != ':') {
             report(d, "Invalid label, must end with :");
@@ -128,6 +162,7 @@ public class Assembler {
         if (label.length() < 2) {
             report(d, "Invalid label");
         }
+        return label.substring(0, label.length() - 1);
     }
 
     private void report(Line line, String message) {
