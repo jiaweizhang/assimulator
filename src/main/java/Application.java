@@ -1,10 +1,6 @@
 import assemble.Assembler;
 import assemble.AssemblerService;
 import assemble.ECE350Assembler;
-import auth.AuthService;
-import com.mongodb.DB;
-import com.mongodb.MongoClient;
-import disassemble.DisassemblerService;
 import io.Stringer;
 import models.ECE350State;
 import models.IntLine;
@@ -64,27 +60,7 @@ public class Application {
 
         apply();
 
-        /*
-        DB mongo = null;
-        try {
-            mongo = mongo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-        //AuthService as = new AuthService();
-
-        /*
-        before("/api/protected/*", (req, res) -> {
-            if (!as.verify(req)) {
-                halt(401, "Not authorized");
-            }
-        });
-        */
-
         new AssemblerService();
-
-        //new DisassemblerService(mongo);
 
         post("/api/simulate", (req, res) -> {
             Application a = new Application();
@@ -93,12 +69,6 @@ public class Application {
 
             return a.simulate(list);
         });
-    }
-
-    private static DB mongo() throws Exception {
-        MongoClient mongoClient = new MongoClient();
-        DB db = mongoClient.getDB("test");
-        return db;
     }
 
     private String simulate(List<String> strings) {
