@@ -1,6 +1,6 @@
 package assimulator.assemble;
 
-import assimulator.JsonUtility;
+import assimulator.utilities.JsonUtility;
 import assimulator.StdResponse;
 import assimulator.assemble.parser.AssemblyParser;
 import org.springframework.stereotype.Service;

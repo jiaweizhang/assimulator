@@ -18,4 +18,8 @@ public class StdResponse {
         this.message = message;
         this.body = body;
     }
+
+    public StdResponse(int status, boolean success, String message) {
+        this(status, success, message, null);
+    }
 }

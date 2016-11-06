@@ -28,7 +28,7 @@ public class Controller {
         return wrap(assemblerService.assemble(assemblerRequest));
     }
 
-    private ResponseEntity wrap(StdResponse stdResponse) {
+    public ResponseEntity wrap(StdResponse stdResponse) {
         stdResponse.timestamp = new Timestamp(Calendar.getInstance().getTime().getTime());
         switch (stdResponse.status) {
             case 200:

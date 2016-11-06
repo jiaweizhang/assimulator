@@ -1,4 +1,4 @@
-package assimulator;
+package assimulator.utilities;
 
 import assimulator.assemble.parser.InstructionGrammar;
 import assimulator.assemble.parser.MacroGrammar;
