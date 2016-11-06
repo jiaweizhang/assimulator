@@ -20,10 +20,10 @@ import static spark.Spark.post;
  * Created by jiaweizhang on 4/11/16.
  */
 public class AssemblerService {
-    private final DBCollection assembler;
+    //private final DBCollection assembler;
 
-    public AssemblerService(DB db) {
-        this.assembler = db.getCollection("assembler");
+    public AssemblerService() {
+        //this.assembler = db.getCollection("assembler");
         setupEndpoints();
     }
 
@@ -43,7 +43,7 @@ public class AssemblerService {
             ObjectId id = create(asm, imem, dmem);
 
             AssemblerResponse ar = new AssemblerResponse();
-            ar.setId(id.toString());
+            ar.setId("some random ID");
             ar.setAsm(asm);
             ar.setImem(imem);
             ar.setDmem(dmem);
@@ -85,12 +85,13 @@ public class AssemblerService {
     public ObjectId create(String asm, String imemMif, String dmemMif) {
         //Asm asm = new Gson().fromJson(body, Asm.class);
         BasicDBObject doc = new BasicDBObject("asm", asm).append("imem", imemMif).append("dmem", dmemMif).append("createdOn", new Date());
-        assembler.insert(doc);
+        //assembler.insert(doc);
         ObjectId id = (ObjectId) doc.get("_id");
         return id;
     }
 
     public Asm find(String id) {
-        return new Asm((BasicDBObject) assembler.findOne(new BasicDBObject("_id", new ObjectId(id))));
+        //return new Asm((BasicDBObject) assembler.findOne(new BasicDBObject("_id", new ObjectId(id))));
+        return null;
     }
 }

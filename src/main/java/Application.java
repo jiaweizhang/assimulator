@@ -64,14 +64,15 @@ public class Application {
 
         apply();
 
+        /*
         DB mongo = null;
         try {
             mongo = mongo();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
-        AuthService as = new AuthService(mongo);
+        //AuthService as = new AuthService();
 
         /*
         before("/api/protected/*", (req, res) -> {
@@ -81,9 +82,9 @@ public class Application {
         });
         */
 
-        new AssemblerService(mongo);
+        new AssemblerService();
 
-        new DisassemblerService(mongo);
+        //new DisassemblerService(mongo);
 
         post("/api/simulate", (req, res) -> {
             Application a = new Application();
