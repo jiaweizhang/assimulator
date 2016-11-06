@@ -1,6 +1,6 @@
-import assemble.parser.AssemblyParser;
-import assemble.parser.InstructionGrammar;
-import assemble.parser.MacroGrammar;
+import assimulator.assemble.parser.AssemblyParser;
+import assimulator.assemble.parser.InstructionGrammar;
+import assimulator.assemble.parser.MacroGrammar;
 import com.google.gson.Gson;
 import org.junit.Test;
 
@@ -20,11 +20,11 @@ public class AssemblyGrammarTest {
     public void Test() throws IOException {
         AssemblyParser assemblyParser = new AssemblyParser();
 
-        String pseudoInstructionGrammarJson = readFile("src/data/ece350macrogrammar.json", Charset.defaultCharset());
+        String pseudoInstructionGrammarJson = readFile("src/data/ece350.json", Charset.defaultCharset());
         List<MacroGrammar> macroGrammars = Arrays.asList(new Gson().fromJson(pseudoInstructionGrammarJson, MacroGrammar[].class));
         assemblyParser.setMacroGrammars(macroGrammars);
 
-        String instructionGrammarJson = readFile("src/data/ece350instructiongrammar.json", Charset.defaultCharset());
+        String instructionGrammarJson = readFile("src/data/ece350.json", Charset.defaultCharset());
         List<InstructionGrammar> instructionGrammars = Arrays.asList(new Gson().fromJson(instructionGrammarJson, InstructionGrammar[].class));
         assemblyParser.setInstructionGrammars(instructionGrammars);
 
