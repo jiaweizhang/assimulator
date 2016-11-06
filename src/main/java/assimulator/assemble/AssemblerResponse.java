@@ -7,5 +7,6 @@ import java.util.List;
  */
 public class AssemblerResponse {
     public String binary;
+    public String dmem;
     public List<String> errors;
 }

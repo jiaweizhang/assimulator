@@ -1,11 +1,10 @@
 package assimulator.assemble;
 
-import assimulator.utilities.JsonUtility;
 import assimulator.StdResponse;
 import assimulator.assemble.parser.AssemblyParser;
+import assimulator.utilities.JsonUtility;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +33,10 @@ public class AssemblerService {
         AssemblerResponse assemblerResponse = new AssemblerResponse();
         if (success) {
             List<String> output = assemblyParser.getBinary();
+            List<String> dmem = assemblyParser.getDataMemory();
             assemblerResponse.binary = InstructionPackager.pack(output);
-            assemblerResponse.errors = new ArrayList<>();
+            assemblerResponse.dmem = InstructionPackager.pack(dmem);
+            assemblerResponse.errors = assemblyParser.getErrors();
         } else {
             assemblerResponse.errors = assemblyParser.getErrors();
             assemblerResponse.binary = "";

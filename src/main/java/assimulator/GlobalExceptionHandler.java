@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+
+import static assimulator.utilities.ResponseUtility.wrap;
+
 @RestController
 @ControllerAdvice
-public class GlobalExceptionHandler extends Controller {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity handleIllegalArgumentException(Exception e) {
@@ -20,6 +24,6 @@ public class GlobalExceptionHandler extends Controller {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception e) {
-        return wrap(new StdResponse(500, false, e.getLocalizedMessage()));
+        return wrap(new StdResponse(500, false, Arrays.toString(e.getStackTrace())));
     }
 }

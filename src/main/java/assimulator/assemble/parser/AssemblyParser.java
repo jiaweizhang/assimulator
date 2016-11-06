@@ -21,6 +21,9 @@ public class AssemblyParser {
 
     private List<String> binaryOutput;
 
+    // data memory
+    private List<Integer> dataMemory;
+
     public AssemblyParser() {
         this.instructionGrammarMap = new HashMap<>();
         this.macroGrammarMap = new HashMap<>();
@@ -30,7 +33,7 @@ public class AssemblyParser {
      * Resets errors
      */
     private void resetErrors() {
-        this.errors = new ArrayList<String>();
+        this.errors = new ArrayList<>();
     }
 
     /***
@@ -65,7 +68,7 @@ public class AssemblyParser {
     /***
      * Process using the current ISA
      *
-     * @param assembly
+     * @param assembly input
      * @return true if no errors
      */
     public boolean process(List<String> assembly) {
@@ -73,7 +76,7 @@ public class AssemblyParser {
         this.resetErrors();
 
         // clear output
-        this.binaryOutput = new ArrayList<String>();
+        this.binaryOutput = new ArrayList<>();
 
         // assign line numbers
         // lambdadize when I feel like it
@@ -157,7 +160,7 @@ public class AssemblyParser {
 
         // map from variable to memory location
         Map<String, Integer> dataVarMap = new HashMap<String, Integer>();
-        List<Integer> dataMemory = new ArrayList<>();
+        dataMemory = new ArrayList<>();
 
         // lambda-ize when I feel like it
         for (Line l : dataLines) {
@@ -382,12 +385,23 @@ public class AssemblyParser {
     }
 
     /***
-     * Retrieves the processed ISA
+     * Retrieves the processed imem
      *
-     * @return
+     * @return imem
      */
     public List<String> getBinary() {
         return binaryOutput;
+    }
+
+    /***
+     * Retrieves the processed dmem
+     *
+     * @return dmem
+     */
+    public List<String> getDataMemory() {
+        return dataMemory.stream()
+                .map(m -> String.format("%32s", Integer.toBinaryString(m)).replaceAll(" ", "0"))
+                .collect(Collectors.toList());
     }
 
     private long pow(long a, int b) {
