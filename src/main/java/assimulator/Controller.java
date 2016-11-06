@@ -15,14 +15,14 @@ import static assimulator.utilities.ResponseUtility.wrap;
 @RestController
 public class Controller {
 
-    @Autowired
-    private AssemblerService assemblerService;
+	@Autowired
+	private AssemblerService assemblerService;
 
-    @RequestMapping(value = "/api/v3/assemble",
-            method = RequestMethod.POST,
-            headers = {"Content-type=application/json"})
-    @ResponseBody
-    public ResponseEntity assemble(@RequestBody final AssemblerRequest assemblerRequest) {
-        return wrap(assemblerService.assemble(assemblerRequest));
-    }
+	@RequestMapping(value = "/api/v3/assemble",
+			method = RequestMethod.POST,
+			headers = {"Content-type=application/json"})
+	@ResponseBody
+	public ResponseEntity assemble(@RequestBody final AssemblerRequest assemblerRequest) {
+		return wrap(assemblerService.assemble(assemblerRequest));
+	}
 }

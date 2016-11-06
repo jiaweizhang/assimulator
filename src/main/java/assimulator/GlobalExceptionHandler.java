@@ -18,18 +18,18 @@ import static assimulator.utilities.ResponseUtility.wrap;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity handleIllegalArgumentException(Exception e) {
-        return wrap(new StdResponse(200, false, "Invalid request: " + e.getLocalizedMessage()));
-    }
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity handleIllegalArgumentException(Exception e) {
+		return wrap(new StdResponse(200, false, "Invalid request: " + e.getLocalizedMessage()));
+	}
 
-    @ExceptionHandler(AssemblyError.class)
-    public ResponseEntity handleAssemblyError(AssemblyError e) {
-        return wrap(new StdResponse(200, false, "Assembly error: " + e.message));
-    }
+	@ExceptionHandler(AssemblyError.class)
+	public ResponseEntity handleAssemblyError(AssemblyError e) {
+		return wrap(new StdResponse(200, false, "Assembly error: " + e.message));
+	}
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity handleException(Exception e) {
-        return wrap(new StdResponse(500, false, Arrays.toString(e.getStackTrace())));
-    }
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity handleException(Exception e) {
+		return wrap(new StdResponse(500, false, Arrays.toString(e.getStackTrace())));
+	}
 }
