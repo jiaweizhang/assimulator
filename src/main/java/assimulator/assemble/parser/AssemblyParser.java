@@ -1,5 +1,7 @@
 package assimulator.assemble.parser;
 
+import assimulator.exceptions.AssemblyError;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -106,54 +108,59 @@ public class AssemblyParser {
                 .filter(l -> l.text.length() > 0)
                 .collect(Collectors.toList());
 
+        // file is empty error
+        if (assembly.size() == 0) {
+            report("No instructions provided");
+        }
+
         // split text and data sections and remove headers
-        Line textHeaderLine = noComments
-                .stream()
-                .filter(l -> l.text.indexOf(".text") == 0)
-                .findFirst()
-                .get();
+        // split into text and data
+        int textBegin = -1;
+        int dataBegin = -1;
 
-        Line dataHeaderLine = noComments
-                .stream()
-                .filter(l -> l.text.indexOf(".data") == 0)
-                .findFirst()
-                .get();
+        for (int i = 0; i < noComments.size(); i++) {
+            Line l = noComments.get(i);
+            if (l.text.startsWith(".text")) {
+                if (textBegin == -1) {
+                    // first occurrence
+                    textBegin = i;
+                } else {
+                    // second occurrence
+                    report(l, "More than one occurrence of .text");
+                }
+            } else if (l.text.startsWith(".data")) {
+                if (dataBegin == -1) {
+                    // first occurrence
+                    dataBegin = i;
+                } else {
+                    // second occurrence
+                    report(l, "More than one occurrence of .data");
+                }
+            }
+        }
 
-        List<Line> textLines = noComments
-                .stream()
-                .filter(l -> textHeaderLine.line > dataHeaderLine.line
-                        ? l.line >= textHeaderLine.line
-                        : l.line >= textHeaderLine.line && l.line < dataHeaderLine.line)
-                .map(l -> {
-                    Line line = new Line();
-                    line.line = l.line;
-                    if (l.text.indexOf(".text") == 0) {
-                        line.text = l.text.substring(5).trim();
-                    } else {
-                        line.text = l.text;
-                    }
-                    return line;
-                })
-                .filter(l -> l.text.length() > 0)
-                .collect(Collectors.toList());
+        if (dataBegin == -1) {
+            report("No data section found");
+        }
+        if (textBegin == -1) {
+            report("No text section found");
+        }
 
-        List<Line> dataLines = noComments
-                .stream()
-                .filter(l -> dataHeaderLine.line > textHeaderLine.line
-                        ? l.line >= dataHeaderLine.line
-                        : l.line >= dataHeaderLine.line && l.line < textHeaderLine.line)
-                .map(l -> {
-                    Line line = new Line();
-                    line.line = l.line;
-                    if (l.text.indexOf(".data") == 0) {
-                        line.text = l.text.substring(5).trim();
-                    } else {
-                        line.text = l.text;
-                    }
-                    return line;
-                })
-                .filter(l -> l.text.length() > 0)
-                .collect(Collectors.toList());
+        List<Line> textLines = null;
+        List<Line> dataLines = null;
+        if (textBegin == 0) {
+            textLines = noComments.subList(1, dataBegin);
+            dataLines = noComments.subList(dataBegin + 1, noComments.size());
+        } else if (dataBegin == 0) {
+            dataLines = noComments.subList(1, textBegin);
+            textLines = noComments.subList(textBegin + 1, noComments.size());
+        } else {
+            report(noComments.get(0), "File must begin with .text or .data");
+        }
+
+        if (textLines.size() == 0) {
+            report("no instructions found");
+        }
 
         // generate data map
         int currentMemoryIndex = 0;
@@ -366,7 +373,7 @@ public class AssemblyParser {
                         }
                     }
 
-                    int valueToShiftAndAdd = (int) ((pow(2, var.numBits + 1) - 1) & numericValue);
+                    int valueToShiftAndAdd = ((int) (pow(2, var.numBits) - 1) & numericValue);
                     int valueToAdd = valueToShiftAndAdd << var.index;
                     binary += valueToAdd;
                 }
@@ -410,5 +417,13 @@ public class AssemblyParser {
         if (b % 2 == 0) return pow(a * a, b / 2);
         else return a * pow(a * a, b / 2);
 
+    }
+
+    private void report(Line line, String message) {
+        throw new AssemblyError(message + " in line " + line.line + ": " + line.text);
+    }
+
+    private void report(String message) {
+        throw new AssemblyError(message);
     }
 }

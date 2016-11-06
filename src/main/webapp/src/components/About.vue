@@ -1,7 +1,7 @@
 <template>
-    <div>
-        About
-    </div>
+  <div>
+    About
+  </div>
 </template>
 <style>
 
@@ -11,4 +11,5 @@
     export default{
 
     }
+
 </script>

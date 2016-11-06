@@ -30,9 +30,12 @@
             <a class="btn btn-primary" id="download-dmem" download='dmem.mif'
                href="data:application/x-mif,">Download Dmem</a>
           </div>
-        </div></div>
+        </div>
+      </div>
 
       <div v-show="processed">
+        <h3 class="text-center">Last Processed</h3>
+        <pre>{{lastProcessed}}</pre>
         <h3 class="text-center">Output Status</h3>
         <pre>{{message}}</pre>
         <h3 class="text-center">Assembly Errors</h3>
@@ -82,6 +85,7 @@ myheap: .word 0x00000000`,
         dmem: '',
         errors: '',
         message: '',
+        lastProcessed: '',
         editor: {}
       }
     },
@@ -99,6 +103,19 @@ ready deprecated: https://github.com/vuejs/vue/issues/2873
 
     methods: {
 
+      timeConverter(UNIX_timestamp){
+        var a = new Date(UNIX_timestamp);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = month + ' ' + date + ', ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time;
+      },
+
       assemble() {
         // generate object
         var postData = {
@@ -109,20 +126,31 @@ ready deprecated: https://github.com/vuejs/vue/issues/2873
 
         this.$http.post('http://localhost:8080/api/v3/assemble', JSON.stringify(postData))
         .then((response) => {
+
           var body = response.body.body;
           // success
-          this.imem = body.binary;
-          this.dmem = body.dmem;
-          this.errors = body.errors;
-          this.message = response.body.message;
+          if (response.body.success) {
+            this.imem = body.binary;
+            this.dmem = body.dmem;
+            this.errors = body.errors;
+            this.message = response.body.message;
 
-          document.getElementById('download-asm').setAttribute('href', "data:application/x-asm," + encodeURI(this.asm));
-          document.getElementById('download-imem').setAttribute('href', "data:application/x-mif," + encodeURI(this.imem));
-          document.getElementById('download-dmem').setAttribute('href', "data:application/x-mif," + encodeURI(this.dmem));
+            document.getElementById('download-asm').setAttribute('href', "data:application/x-asm," + encodeURI(this.asm));
+            document.getElementById('download-imem').setAttribute('href', "data:application/x-mif," + encodeURI(this.imem));
+            document.getElementById('download-dmem').setAttribute('href', "data:application/x-mif," + encodeURI(this.dmem));
+          } else {
+            this.message = response.body.message;
+          }
           this.processed = true;
+          var unix_timestamp = response.body.timestamp;
+
+          //http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+          this.lastProcessed = this.timeConverter(unix_timestamp);
         }, (response) => {
           // fail
           this.message = 'Server cannot be accessed';
+          var unix_timestamp = response.body.timestamp;
+          this.lastProcessed = this.timeConverter(unix_timestamp);
         });
       },
       clear() {
@@ -131,5 +159,6 @@ ready deprecated: https://github.com/vuejs/vue/issues/2873
       }
     }
   }
+
 
 </script>

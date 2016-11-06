@@ -1,7 +1,7 @@
 <template>
-    <div>
-        Simulator
-    </div>
+  <div>
+    Simulator
+  </div>
 </template>
 <style>
 
@@ -11,4 +11,5 @@
     export default{
 
     }
+
 </script>

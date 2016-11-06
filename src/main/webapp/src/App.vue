@@ -7,11 +7,17 @@
             <router-link class="navbar-brand" to="/">ADS</router-link>
           </div>
           <ul class="nav navbar-nav">
-            <li><router-link to="/assembler">Assembler</router-link></li>
-            <li><router-link to="/simulator">Simulator</router-link></li>
+            <li>
+              <router-link to="/assembler">Assembler</router-link>
+            </li>
+            <li>
+              <router-link to="/simulator">Simulator</router-link>
+            </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><router-link to="/about">About</router-link></li>
+            <li>
+              <router-link to="/about">About</router-link>
+            </li>
           </ul>
         </div>
       </nav>
@@ -36,6 +42,7 @@
 
 export default {
 }
+
 
 
 
