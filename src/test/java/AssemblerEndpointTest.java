@@ -1,6 +1,6 @@
-import assemble.AssemblerRequest;
-import assemble.parser.InstructionGrammar;
-import assemble.parser.MacroGrammar;
+import assimulator.assemble.AssemblerRequest;
+import assimulator.assemble.parser.InstructionGrammar;
+import assimulator.assemble.parser.MacroGrammar;
 import com.google.gson.Gson;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
@@ -27,10 +27,10 @@ public class AssemblerEndpointTest {
 	public void TestEndpointTest() throws IOException {
 		HttpClient httpClient = HttpClientBuilder.create().build(); //Use this instead
 
-		String macroGrammarJson = readFile("src/data/ece350macrogrammar.json", Charset.defaultCharset());
+		String macroGrammarJson = readFile("src/data/ece350.json", Charset.defaultCharset());
 		List<MacroGrammar> macroGrammars = Arrays.asList(new Gson().fromJson(macroGrammarJson, MacroGrammar[].class));
 
-		String instructionGrammarJson = readFile("src/data/ece350instructiongrammar.json", Charset.defaultCharset());
+		String instructionGrammarJson = readFile("src/data/ece350.json", Charset.defaultCharset());
 		List<InstructionGrammar> instructionGrammars = Arrays.asList(new Gson().fromJson(instructionGrammarJson, InstructionGrammar[].class));
 
 		List<String> assembly = Files.readAllLines(Paths.get("src/data/asm/ece350.asm"), Charset.defaultCharset());

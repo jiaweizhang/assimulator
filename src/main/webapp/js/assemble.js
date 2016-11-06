@@ -80,10 +80,11 @@ setTimeout(function () {
                 url: "http://localhost:8080/api/v3/assemble",
                 type: "POST",
                 // hack: http://stackoverflow.com/questions/1256593/why-am-i-getting-an-options-request-instead-of-a-get-request
-                contentType: 'text/plain',
+                contentType: 'application/json',
                 data: JSON.stringify(self.json()),
-                success: function (returnedData) {
-                    var binaryJson = JSON.parse(returnedData);
+                success: function (response) {
+                    console.log(response);
+                    var binaryJson = response.body;
                     self.binary(binaryJson.binary);
                     self.returnedErrors(binaryJson.errors);
                 }
