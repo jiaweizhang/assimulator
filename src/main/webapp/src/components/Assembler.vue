@@ -124,7 +124,7 @@ ready deprecated: https://github.com/vuejs/vue/issues/2873
           macroGrammars: []
         }
 
-        this.$http.post('http://localhost:8080/api/v3/assemble', JSON.stringify(postData))
+        this.$http.post('http://colab-sbx-164.oit.duke.edu:8080/api/v3/assemble', JSON.stringify(postData))
         .then((response) => {
 
           var body = response.body.body;
